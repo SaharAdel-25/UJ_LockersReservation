@@ -3,10 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
 package uj_lockersreservation;
-
-/**
- *
- * @author s4ooo
+/*
+Suad Anees Alsaadi 2219146
+Sahar Adel 
+Sara Hamdan
  */
 public class UJ_LockersReservation {
 
