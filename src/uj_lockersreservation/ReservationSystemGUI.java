@@ -10,7 +10,7 @@ public class ReservationSystemGUI extends JFrame {
 
     public ReservationSystemGUI() { 
         super("UJ Lockers Reservation");
-        setSize(600, 400);
+        setSize(600, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         
@@ -382,16 +382,19 @@ public void page4() {
     }
     public void page6() {
     // تفريغ محتويات الإطار الحالي
-    getContentPane().removeAll();
+    //getContentPane().removeAll();
 
     // إعداد اللوحات
-    JPanel panel0 = new JPanel(new GridLayout(6, 0, 10, 10));
+    JPanel panel0 = new JPanel(new GridLayout(4, 0, 10, 10));
     JPanel panel = new JPanel(new GridLayout(1, 2, 10, 10)); // لأزرار الفصل
     JPanel panel2 = new JPanel(new GridLayout(2, 2, 10, 10)); // لأزرار الدفع
+    JPanel panel3 = new JPanel(new BorderLayout()); //
     JPanel panel4 = new JPanel(new FlowLayout(FlowLayout.RIGHT)); // لأزرار الفصل
     JPanel panel6 = new JPanel(new FlowLayout(FlowLayout.LEFT)); // حقل المبلغ
     JPanel panel7 = new JPanel(new FlowLayout(FlowLayout.LEFT)); // رمز العملة
     JPanel panel8 = new JPanel(new FlowLayout(FlowLayout.LEFT)); // نص "Payment" والأيقونة
+    JPanel panel15 = new JPanel(new BorderLayout()); //payment , الازرار
+
 
     // تنسيق الأزرار لفصلي الدراسة
     JButton semester1Button = new JButton("Semester 1");
@@ -436,7 +439,12 @@ public void page4() {
     panel2.add(mada);
     panel2.add(tamara);
     panel2.add(pay);
+    
+    panel15.add(panel8,BorderLayout.NORTH);
+    panel15.add(panel2);
+    
 
+    
     // زر "الدفع عند الاستلام"
     JPanel panel5 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
     JButton cashOnDeliveryButton = new JButton("Cash on Delivery");
@@ -448,8 +456,9 @@ public void page4() {
     // إضافة اللوحات الرئيسية
     panel0.add(panel4);    // لوحة أزرار الفصول
     panel0.add(panel6);    // حقل العملة والمبلغ
-    panel0.add(panel8);    // أيقونة ونص "Payment"
-    panel0.add(panel2);    // لوحة خيارات الدفع
+    //panel0.add(panel8);    // أيقونة ونص "Payment"
+    panel0.add(panel15);
+    //panel0.add(panel2);    // لوحة خيارات الدفع
     panel0.add(panel5);    // زر "الدفع عند الاستلام"
 
     // إعداد الإطار الرئيسي
