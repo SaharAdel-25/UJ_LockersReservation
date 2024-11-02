@@ -413,13 +413,13 @@ public void page4() {
     panel6.add(panel7);
 
     // أيقونة ونص "Payment"
-    ImageIcon originalIcon = new ImageIcon("C:\\NetBeansProjects\\UJ_LockersReservation\\src\\uj_lockersreservation\\download.png");
+    ImageIcon originalIcon = new ImageIcon("C:\\Users\\s4ooo\\Downloads\\UJ_LockersReservation-main\\UJ_LockersReservation-main\\UJ_LockersReservation\\src\\uj_lockersreservation\\download.png");
     Image scaledImage = originalIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH); // تغيير الحجم
     ImageIcon scaledIcon = new ImageIcon(scaledImage);
     JLabel ico = new JLabel(scaledIcon);
     JLabel payment = new JLabel("Payment");
     payment.setFont(new Font("Times New Roman", Font.BOLD, 18));
-    payment.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 10)); // هوامش للنص
+    payment.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10)); // هوامش للنص
     panel8.add(ico);
     panel8.add(payment);
 
