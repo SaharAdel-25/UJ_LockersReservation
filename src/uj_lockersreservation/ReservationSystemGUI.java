@@ -380,130 +380,211 @@ public void page4() {
         button.setCursor(new Cursor(Cursor.HAND_CURSOR)); // مؤشر اليد عند المرور
         button.setOpaque(true);
     }
-    
-        public void page6() {
-            
-        setTitle("Payment Interface");
-        JPanel panel0 = new JPanel();
-        JPanel panel = new JPanel();
-        JPanel panel2 = new JPanel();
-        JPanel panel3 = new JPanel();
-        JPanel panel4 = new JPanel();
-        JPanel panel5 = new JPanel();   
-        JPanel panel6 = new JPanel();   
-        JPanel panel7 = new JPanel();
-        JPanel panel8 = new JPanel();
+    public void page6() {
+    // تفريغ محتويات الإطار الحالي
+    getContentPane().removeAll();
 
+    // إعداد اللوحات
+    JPanel panel0 = new JPanel(new GridLayout(6, 0, 10, 10));
+    JPanel panel = new JPanel(new GridLayout(1, 2, 10, 10)); // لأزرار الفصل
+    JPanel panel2 = new JPanel(new GridLayout(2, 2, 10, 10)); // لأزرار الدفع
+    JPanel panel4 = new JPanel(new FlowLayout(FlowLayout.RIGHT)); // لأزرار الفصل
+    JPanel panel6 = new JPanel(new FlowLayout(FlowLayout.LEFT)); // حقل المبلغ
+    JPanel panel7 = new JPanel(new FlowLayout(FlowLayout.LEFT)); // رمز العملة
+    JPanel panel8 = new JPanel(new FlowLayout(FlowLayout.LEFT)); // نص "Payment" والأيقونة
 
+    // تنسيق الأزرار لفصلي الدراسة
+    JButton semester1Button = new JButton("Semester 1");
+    JButton semester2Button = new JButton("Semester 2");
+    styleButton(semester1Button);
+    styleButton(semester2Button);
+    panel.add(semester1Button);
+    panel.add(semester2Button);
+    panel4.add(panel); // إضافة أزرار الفصل إلى panel4
+    panel4.setBorder(BorderFactory.createEmptyBorder(20, 20, 10, 10)); // هوامش لأزرار الفصل
 
-    /*
-        panel.setLayout(new GridLayout(1,2,5,5));
-        panel4.setLayout(new BorderLayout());
-        JButton semester1Button = new JButton("Semester 1");
-        JButton semester2Button = new JButton("Semester 2");
-        panel.add(semester1Button);
-        panel.add(semester2Button );
-        panel4.add(panel,BorderLayout.EAST);
-        
-        
-       panel4.setBorder(BorderFactory.createEmptyBorder(25,25,10,10)); // مسافة
+    // حقل العملة والمبلغ
+    JLabel rs = new JLabel("RS");
+    rs.setFont(new Font("Times New Roman", Font.BOLD, 16));
+    JTextField amount = new JTextField(15);
+    amount.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK)); // خط أسفل الحقل
+    panel7.add(rs);
+    panel7.add(amount);
+    panel6.add(panel7);
 
-*/
-               panel.setLayout(new GridLayout(1,2,5,5));
-//        panel4.setLayout(new BorderLayout());
-        JButton semester1Button = new JButton("Semester 1");
-        JButton semester2Button = new JButton("Semester 2");
-        panel.add(semester1Button);
-        panel.add(semester2Button );
-        panel4.add(panel);
-        
-        panel4.setLayout(new FlowLayout(FlowLayout.RIGHT)); // ضبط التخطيط لليسار
+    // أيقونة ونص "Payment"
+    ImageIcon originalIcon = new ImageIcon("C:\\NetBeansProjects\\UJ_LockersReservation\\src\\uj_lockersreservation\\download.png");
+    Image scaledImage = originalIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH); // تغيير الحجم
+    ImageIcon scaledIcon = new ImageIcon(scaledImage);
+    JLabel ico = new JLabel(scaledIcon);
+    JLabel payment = new JLabel("Payment");
+    payment.setFont(new Font("Times New Roman", Font.BOLD, 18));
+    payment.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 10)); // هوامش للنص
+    panel8.add(ico);
+    panel8.add(payment);
 
-        
-       panel4.setBorder(BorderFactory.createEmptyBorder(25,25,10,10)); // مسافة
+    // أزرار خيارات الدفع
+    JButton visa = new JButton("Visa");
+    JButton mada = new JButton("Mada");
+    JButton tamara = new JButton("Tamara");
+    JButton pay = new JButton("Pay");
+    styleButton(visa);
+    styleButton(mada);
+    styleButton(tamara);
+    styleButton(pay);
+    panel2.add(visa);
+    panel2.add(mada);
+    panel2.add(tamara);
+    panel2.add(pay);
 
-       
-        
+    // زر "الدفع عند الاستلام"
+    JPanel panel5 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+    JButton cashOnDeliveryButton = new JButton("Cash on Delivery");
+    styleButton(cashOnDeliveryButton);
+    cashOnDeliveryButton.setBackground(new Color(233, 87, 63)); // لون أحمر فاتح لزر الدفع عند الاستلام
+    panel5.add(cashOnDeliveryButton);
+    panel5.setBorder(BorderFactory.createEmptyBorder(10, 20, 20, 10)); // هوامش
 
-            
-        JLabel rs = new JLabel("rs");
-        JTextField amount= new JTextField(25);
-//        panel6.add(rs);
-//        panel6.add(amount);
-        
-        amount.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK)); // خط أسود في الأسفل
+    // إضافة اللوحات الرئيسية
+    panel0.add(panel4);    // لوحة أزرار الفصول
+    panel0.add(panel6);    // حقل العملة والمبلغ
+    panel0.add(panel8);    // أيقونة ونص "Payment"
+    panel0.add(panel2);    // لوحة خيارات الدفع
+    panel0.add(panel5);    // زر "الدفع عند الاستلام"
 
-        panel7.setLayout(new FlowLayout(FlowLayout.LEFT)); // ضبط التخطيط لليسار
+    // إعداد الإطار الرئيسي
+    panel0.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // حواف للوحة الرئيسية
+    add(panel0, BorderLayout.CENTER);
 
-        panel7.add(rs);
-        panel7.add(amount);
-        panel6.setLayout(new FlowLayout(FlowLayout.LEFT)); // ضبط التخطيط لليسار
-
-                panel6.add(panel7);
-
-    
-         // إنشاء أيقونة
-//        ImageIcon icon = new ImageIcon(getClass().getResource("/uj_lockersreservation/download.jpg"));
-        ImageIcon originalIcon = new ImageIcon("C:\\NetBeansProjects\\UJ_LockersReservation\\src\\uj_lockersreservation\\download.png");
-        Image scaledImage = originalIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH); // تغيير الحجم
-        ImageIcon scaledIcon = new ImageIcon(scaledImage); // إنشاء ImageIcon جديد بالحجم المصغر
-        JLabel ico = new JLabel(scaledIcon); // إنشاء JLabel للأيقونة
-
-//, SwingConstants.LEFT
-        JLabel payment = new JLabel("Payment");
-        payment.setBorder(BorderFactory.createEmptyBorder(10,0,0,10)); // مسافة
-
-        panel8.add(ico); // إضافة الأيقونة
-        panel8.add(payment);
-        panel8.setLayout(new FlowLayout(FlowLayout.LEFT)); // ضبط التخطيط لليسار
-        
-//t-l-b-r
-
-        JButton Mada = new JButton("Mada");
-        JButton visa = new JButton("Visa");
-        JButton pay = new JButton("Pay");
-        JButton Tamara = new JButton("Tamara");
-
- 
-        
-        panel2.setLayout(new GridLayout(2,2,10,10));
-
-        panel2.add(visa);
-        panel2.add(Mada);
-        panel2.add(Tamara);
-        panel2.add(pay);
-     
-//        panel3.setLayout(new BorderLayout());
-        panel3.add(panel2);
-
-        panel3.setLayout(new FlowLayout(FlowLayout.LEFT)); // ضبط التخطيط لليسار
-
-//        panel3.setBorder(BorderFactory.createEmptyBorder(0, 150, 0, 150)); //t-l-b-r
-
-        
-        JButton cashOnDeliveryButton = new JButton("Cash on Delivery");
-//        panel5.setLayout(new BorderLayout());
-        panel5.add(cashOnDeliveryButton);
-//        
-       
-       panel5.setLayout(new FlowLayout(FlowLayout.RIGHT)); // ضبط التخطيط لليسار
-       panel5.setBorder(BorderFactory.createEmptyBorder(10,25,10,10)); // مسافة
-
-    panel0.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-
-    setLayout(new GridLayout(6,0));
-    add(panel4,BorderLayout.NORTH);//smestr
-    //add(new JLabel());
-        add(panel6);//rs
-        add(panel8);
-        add(panel3);//4
-        add(panel5,BorderLayout.SOUTH);//cash
-        
-
-        pack(); // يجعل الإطار يناسب مكوناته
-        
-      
-            
-            
-        }
+    // إعادة رسم الواجهة
+    revalidate();
+    repaint();
 }
+}
+    
+//        public void page6() {
+//            
+//        setTitle("Payment Interface");
+//        JPanel panel0 = new JPanel();
+//        JPanel panel = new JPanel();
+//        JPanel panel2 = new JPanel();
+//        JPanel panel3 = new JPanel();
+//        JPanel panel4 = new JPanel();
+//        JPanel panel5 = new JPanel();   
+//        JPanel panel6 = new JPanel();   
+//        JPanel panel7 = new JPanel();
+//        JPanel panel8 = new JPanel();
+//
+//
+//
+//    /*
+//        panel.setLayout(new GridLayout(1,2,5,5));
+//        panel4.setLayout(new BorderLayout());
+//        JButton semester1Button = new JButton("Semester 1");
+//        JButton semester2Button = new JButton("Semester 2");
+//        panel.add(semester1Button);
+//        panel.add(semester2Button );
+//        panel4.add(panel,BorderLayout.EAST);
+//        
+//        
+//       panel4.setBorder(BorderFactory.createEmptyBorder(25,25,10,10)); // مسافة
+//
+//*/
+//               panel.setLayout(new GridLayout(1,2,5,5));
+////        panel4.setLayout(new BorderLayout());
+//        JButton semester1Button = new JButton("Semester 1");
+//        JButton semester2Button = new JButton("Semester 2");
+//        panel.add(semester1Button);
+//        panel.add(semester2Button );
+//        panel4.add(panel);
+//        
+//        panel4.setLayout(new FlowLayout(FlowLayout.RIGHT)); // ضبط التخطيط لليسار
+//
+//        
+//       panel4.setBorder(BorderFactory.createEmptyBorder(25,25,10,10)); // مسافة
+//
+//       
+//        
+//
+//            
+//        JLabel rs = new JLabel("rs");
+//        JTextField amount= new JTextField(25);
+////        panel6.add(rs);
+////        panel6.add(amount);
+//        
+//        amount.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK)); // خط أسود في الأسفل
+//
+//        panel7.setLayout(new FlowLayout(FlowLayout.LEFT)); // ضبط التخطيط لليسار
+//
+//        panel7.add(rs);
+//        panel7.add(amount);
+//        panel6.setLayout(new FlowLayout(FlowLayout.LEFT)); // ضبط التخطيط لليسار
+//
+//                panel6.add(panel7);
+//
+//    
+//         // إنشاء أيقونة
+////        ImageIcon icon = new ImageIcon(getClass().getResource("/uj_lockersreservation/download.jpg"));
+//        ImageIcon originalIcon = new ImageIcon("C:\\NetBeansProjects\\UJ_LockersReservation\\src\\uj_lockersreservation\\download.png");
+//        Image scaledImage = originalIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH); // تغيير الحجم
+//        ImageIcon scaledIcon = new ImageIcon(scaledImage); // إنشاء ImageIcon جديد بالحجم المصغر
+//        JLabel ico = new JLabel(scaledIcon); // إنشاء JLabel للأيقونة
+//
+////, SwingConstants.LEFT
+//        JLabel payment = new JLabel("Payment");
+//        payment.setBorder(BorderFactory.createEmptyBorder(10,0,0,10)); // مسافة
+//
+//        panel8.add(ico); // إضافة الأيقونة
+//        panel8.add(payment);
+//        panel8.setLayout(new FlowLayout(FlowLayout.LEFT)); // ضبط التخطيط لليسار
+//        
+////t-l-b-r
+//
+//        JButton Mada = new JButton("Mada");
+//        JButton visa = new JButton("Visa");
+//        JButton pay = new JButton("Pay");
+//        JButton Tamara = new JButton("Tamara");
+//
+// 
+//        
+//        panel2.setLayout(new GridLayout(2,2,10,10));
+//
+//        panel2.add(visa);
+//        panel2.add(Mada);
+//        panel2.add(Tamara);
+//        panel2.add(pay);
+//     
+////        panel3.setLayout(new BorderLayout());
+//        panel3.add(panel2);
+//
+//        panel3.setLayout(new FlowLayout(FlowLayout.LEFT)); // ضبط التخطيط لليسار
+//
+////        panel3.setBorder(BorderFactory.createEmptyBorder(0, 150, 0, 150)); //t-l-b-r
+//
+//        
+//        JButton cashOnDeliveryButton = new JButton("Cash on Delivery");
+////        panel5.setLayout(new BorderLayout());
+//        panel5.add(cashOnDeliveryButton);
+////        
+//       
+//       panel5.setLayout(new FlowLayout(FlowLayout.RIGHT)); // ضبط التخطيط لليسار
+//       panel5.setBorder(BorderFactory.createEmptyBorder(10,25,10,10)); // مسافة
+//
+//    panel0.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+//
+//    setLayout(new GridLayout(6,0));
+//    add(panel4,BorderLayout.NORTH);//smestr
+//    //add(new JLabel());
+//        add(panel6);//rs
+//        add(panel8);
+//        add(panel3);//4
+//        add(panel5,BorderLayout.SOUTH);//cash
+//        
+//
+//        pack(); // يجعل الإطار يناسب مكوناته
+//        
+//      
+//            
+//            
+//        }
+//}

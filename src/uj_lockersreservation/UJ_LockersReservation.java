@@ -12,6 +12,9 @@ public class UJ_LockersReservation {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+          
+        ReservationSystemGUI frame = new ReservationSystemGUI();
+        frame.setVisible(true);
     }
     
 }
