@@ -1,599 +1,422 @@
-
 package uj_lockersreservation;
-
 
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.border.Border;
 
 public class ReservationSystemGUI extends JFrame {
 
+    // Constructor to set up the main JFrame
     public ReservationSystemGUI() { 
         super("UJ Lockers Reservation");
-        setSize(600, 500);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-        
-        //page1();
-        //page2();
-       //page3();
-       //page4();
-       //page5();
-       page6();
+        setSize(600, 500); // Set the window size
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Exit on close
+        setLocationRelativeTo(null); // Center the window on the screen
 
-        
+//        page1();
+//        page2();
+//        page3();
+//        page4();
+//        page5();
+        page6(); 
     }
 
-    // الصفحة الأولى: تسجيل الدخول
+    // Page 1: Starting page with login and register options
     public void page1() {
-        // تغيير التخطيط ليكون BorderLayout للواجهة الرئيسية
-        setLayout(new BorderLayout());
+        setLayout(new BorderLayout()); // Use BorderLayout for main layout
 
-        // لوحة تسجيل الدخول
-        JPanel loginPanel = new JPanel();
-        loginPanel.setLayout(new GridBagLayout()); // مركز العناصر
-        loginPanel.setBackground(new Color(245, 245, 245)); // خلفية خفيفة للوحة
-        
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10); // مسافة بين العناصر
-        gbc.fill = GridBagConstraints.HORIZONTAL;
+        JPanel loginPanel = new JPanel(); // Create a panel for login
+        loginPanel.setLayout(new GridBagLayout()); // Use GridBagLayout for flexible positioning
+        loginPanel.setBackground(new Color(245, 245, 245)); // Set background color
 
-        // رسالة الترحيب الرئيسية
+        GridBagConstraints gbc = new GridBagConstraints(); // For positioning components
+        gbc.insets = new Insets(10, 10, 10, 10); // Set margins between components
+        gbc.fill = GridBagConstraints.HORIZONTAL; // Fill horizontally
+
+        // Welcome label
         JLabel welcomeLabel = new JLabel("Welcome to UJ Lockers Reservation System", SwingConstants.CENTER);
-        welcomeLabel.setFont(new Font("Times New Roman", Font.BOLD, 24));
-        welcomeLabel.setForeground(new Color(0, 102, 204)); // لون أزرق جذاب
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.gridwidth = 2;
-        loginPanel.add(welcomeLabel, gbc);
+        welcomeLabel.setFont(new Font("Times New Roman", Font.BOLD, 24)); // Set font style
+        welcomeLabel.setForeground(new Color(0, 102, 204)); // Set text color
+        gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 2; // Positioning
+        loginPanel.add(welcomeLabel, gbc); // Add label to panel
 
-        // أيقونة ترحيب (إضافة أيقونة لطيفة في الأعلى)
-        JLabel iconLabel = new JLabel(new ImageIcon("icon.png")); // تحتاج إلى صورة باسم icon.png في المجلد
-        gbc.gridy++;
-        loginPanel.add(iconLabel, gbc);
-
-
-        // زر تسجيل الدخول
+        // Log in Button
         JButton loginButton = new JButton("Log in");
-        styleButton(loginButton);
-        gbc.gridx = 0;
-        gbc.gridy++;
-        gbc.gridwidth = 2;
-        loginPanel.add(loginButton, gbc);
+        styleButton(loginButton); // Apply style
+        gbc.gridy++; // Move to next row
+        loginPanel.add(loginButton, gbc); // Add button to panel
 
-        // زر التسجيل
+        // Register button
         JButton registerButton = new JButton("Register");
-        styleButton(registerButton);
-        gbc.gridy++;
-        loginPanel.add(registerButton, gbc);
+        styleButton(registerButton); // Apply style
+        gbc.gridy++; // Move to next row
+        loginPanel.add(registerButton, gbc); // Add button to panel
 
-        add(loginPanel, BorderLayout.CENTER);
+        add(loginPanel, BorderLayout.CENTER); // Add panel to frame
         
-        // عرض الواجهة
-        setVisible(true);
+        setVisible(true); // Make frame visible
     }
 
-// الصفحة الثانية: واجهة التسجيل
+    // Page 2: Registration page where users can create an account
     public void page2() {
-        // تفريغ محتويات الإطار الحالي
-        getContentPane().removeAll();
+        getContentPane().removeAll(); // Clear previous components
+        setLayout(new BorderLayout()); // Set layout
 
-        // إعداد تخطيط الواجهة
-        setLayout(new BorderLayout());
+        JPanel registerPanel = new JPanel(); // Create registration panel
+        registerPanel.setLayout(new GridBagLayout()); // Use GridBagLayout
+        registerPanel.setBackground(new Color(245, 245, 245)); // Set background color
+        GridBagConstraints gbc = new GridBagConstraints(); // For positioning
 
-        // إنشاء واجهة التسجيل
-        JPanel registerPanel = new JPanel();
-        registerPanel.setLayout(new GridBagLayout());
-        registerPanel.setBackground(new Color(245, 245, 245)); // خلفية خفيفة للوحة
-        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10); // Set margins
+        gbc.fill = GridBagConstraints.HORIZONTAL; // Fill horizontally
+        gbc.gridx = 0; gbc.gridy = 0; // Start position
 
-        // إعداد الهوامش وتنسيق التخطيط
-        gbc.insets = new Insets(10, 10, 10, 10);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-
-        // عنوان واجهة التسجيل
+        // Sign up label
         JLabel signUpLabel = new JLabel("Create a New Account", SwingConstants.CENTER);
-        signUpLabel.setFont(new Font("Times New Roman", Font.BOLD, 24));
-        signUpLabel.setForeground(new Color(0, 102, 204)); // لون أزرق جذاب
-        gbc.gridwidth = 2; // توسعة العنوان ليمتد على كامل العرض
-        registerPanel.add(signUpLabel, gbc);
+        signUpLabel.setFont(new Font("Times New Roman", Font.BOLD, 24)); // Set font style
+        signUpLabel.setForeground(new Color(0, 102, 204)); // Set text color
+        gbc.gridwidth = 2; // Span across two columns
+        registerPanel.add(signUpLabel, gbc); // Add label to panel
 
-        // حقل الاسم الأول
-        gbc.gridy++;
-        gbc.gridwidth = 1;
+        // First Name label and text field
+        gbc.gridy++; gbc.gridwidth = 1; // Move to next row and reset width
         JLabel firstNameLabel = new JLabel("First Name:");
         firstNameLabel.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-        registerPanel.add(firstNameLabel, gbc);
+        registerPanel.add(firstNameLabel, gbc); // Add label to panel
 
-        gbc.gridx = 1;
-        JTextField firstNameField = new JTextField(15);
+        gbc.gridx = 1; // Move to next column
+        JTextField firstNameField = new JTextField(15); // Text field for first name
         firstNameField.setFont(new Font("Times New Roman", Font.PLAIN, 14));
-        registerPanel.add(firstNameField, gbc);
+        registerPanel.add(firstNameField, gbc); // Add text field to panel
 
-        // حقل اسم العائلة
-        gbc.gridx = 0;
-        gbc.gridy++;
-        JLabel lastNameLabel = new JLabel("Last Name:");
-        lastNameLabel.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-        registerPanel.add(lastNameLabel, gbc);
+        gbc.gridx = 0; // Set the column index to 0 for the next component
+        gbc.gridy++; // Move to the next row
+        JLabel lastNameLabel = new JLabel("Last Name:"); // Create a label for last name
+        lastNameLabel.setFont(new Font("Times New Roman", Font.PLAIN, 16)); // Set font style for the label
+        registerPanel.add(lastNameLabel, gbc); // Add the last name label to the register panel
 
-        gbc.gridx = 1;
-        JTextField lastNameField = new JTextField(15);
-        lastNameField.setFont(new Font("Arial", Font.PLAIN, 14));
-        registerPanel.add(lastNameField, gbc);
+        gbc.gridx = 1; // Set the column index to 1 for the text field
+        JTextField lastNameField = new JTextField(15); // Create a text field for last name input
+        lastNameField.setFont(new Font("Times New Roman", Font.PLAIN, 14)); // Set font style for the text field
+        registerPanel.add(lastNameField, gbc); // Add the last name text field to the register panel
 
-        // حقل البريد الإلكتروني
-        gbc.gridx = 0;
-        gbc.gridy++;
-        JLabel emailLabel = new JLabel("Email:");
-        emailLabel.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-        registerPanel.add(emailLabel, gbc);
+        gbc.gridx = 0; // Reset the column index to 0 for the next label
+        gbc.gridy++; // Move to the next row
+        JLabel emailLabel = new JLabel("Email:"); // Create a label for email
+        emailLabel.setFont(new Font("Times New Roman", Font.PLAIN, 16)); // Set font style for the label
+        registerPanel.add(emailLabel, gbc); // Add the email label to the register panel
 
-        gbc.gridx = 1;
-        JTextField emailField = new JTextField(15);
-        emailField.setFont(new Font("Times New Roman", Font.PLAIN, 14));
-        registerPanel.add(emailField, gbc);
-        
-        // حقل الرقم الجامعي
-        gbc.gridx = 0;
-        gbc.gridy++;
-        JLabel idLabel = new JLabel("ID Number:");
-        idLabel.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-        registerPanel.add(idLabel, gbc);
+        gbc.gridx = 1; // Set the column index to 1 for the text field
+        JTextField emailField = new JTextField(15); // Create a text field for email input
+        emailField.setFont(new Font("Times New Roman", Font.PLAIN, 14)); // Set font style for the text field
+        registerPanel.add(emailField, gbc); // Add the email text field to the register panel
 
-        gbc.gridx = 1;
-        JTextField idField = new JTextField(15);
-        idField.setFont(new Font("Times New Roman", Font.PLAIN, 14));
-        registerPanel.add(idField, gbc);
+        gbc.gridx = 0; // Reset the column index to 0 for the next label
+        gbc.gridy++; // Move to the next row
+        JLabel idLabel = new JLabel("ID Number:"); // Create a label for ID number
+        idLabel.setFont(new Font("Times New Roman", Font.PLAIN, 16)); // Set font style for the label
+        registerPanel.add(idLabel, gbc); // Add the ID number label to the register panel
 
-        // حقل كلمة المرور
-        gbc.gridx = 0;
-        gbc.gridy++;
-        JLabel passwordLabel = new JLabel("Password:");
-        passwordLabel.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-        registerPanel.add(passwordLabel, gbc);
+        gbc.gridx = 1; // Set the column index to 1 for the text field
+        JTextField idField = new JTextField(15); // Create a text field for ID number input
+        idField.setFont(new Font("Times New Roman", Font.PLAIN, 14)); // Set font style for the text field
+        registerPanel.add(idField, gbc); // Add the ID number text field to the register panel
 
-        gbc.gridx = 1;
-        JPasswordField passwordField = new JPasswordField(15);
-        passwordField.setFont(new Font("Times New Roman", Font.PLAIN, 14));
-        registerPanel.add(passwordField, gbc);
+        gbc.gridx = 0; // Reset the column index to 0 for the next label
+        gbc.gridy++; // Move to the next row
+        JLabel passwordLabel = new JLabel("Password:"); // Create a label for password
+        passwordLabel.setFont(new Font("Times New Roman", Font.PLAIN, 16)); // Set font style for the label
+        registerPanel.add(passwordLabel, gbc); // Add the password label to the register panel
 
-        // زر التسجيل
-        gbc.gridx = 0;
-        gbc.gridy++;
-        gbc.gridwidth = 2;
+        gbc.gridx = 1; // Set the column index to 1 for the password field
+        JPasswordField passwordField = new JPasswordField(15); // Create a password field for secure input
+        passwordField.setFont(new Font("Times New Roman", Font.PLAIN, 14)); // Set font style for the password field
+        registerPanel.add(passwordField, gbc); // Add the password field to the register panel
+
+        // Register button
+        gbc.gridx = 0; gbc.gridy++; gbc.gridwidth = 2; // Reset position
         JButton signUpSubmitButton = new JButton("Register");
-        styleButton(signUpSubmitButton);
-        registerPanel.add(signUpSubmitButton, gbc);
+        styleButton(signUpSubmitButton); // Apply style
+        registerPanel.add(signUpSubmitButton, gbc); // Add button to panel
 
-        // زر للرجوع إلى صفحة تسجيل الدخول
-        gbc.gridy++;
+        // Back button
+        gbc.gridy++; // Move to next row
         JButton backButton = new JButton("Back");
-        styleButton(backButton);
-        backButton.setBackground(new Color(233, 87, 63)); // لون أحمر لزر الرجوع
-        registerPanel.add(backButton, gbc);
+        styleButton(backButton); // Apply style
+        backButton.setBackground(new Color(233, 87, 63)); // Change background color
+        registerPanel.add(backButton, gbc); // Add button to panel
 
-        // إضافة واجهة التسجيل إلى الإطار
-        add(registerPanel, BorderLayout.CENTER);
-
+        add(registerPanel, BorderLayout.CENTER); // Add register panel to frame
     }
 
-        // الصفحة الثالثة: واجهة تسجيل الدخول
-    public void page3() {
+        // Page 3: Login page for user authentication
+        public void page3() {
+            setLayout(new BorderLayout()); // Set layout for the main container
 
-        setLayout(new BorderLayout());
+            JPanel loginPanel = new JPanel(); // Create a panel for login components
+            loginPanel.setLayout(new GridBagLayout()); // Use GridBagLayout for flexible positioning
+            loginPanel.setBackground(new Color(245, 245, 245)); // Set background color of the panel
+            GridBagConstraints gbc = new GridBagConstraints(); // Create constraints for positioning components
 
-        // إنشاء واجهة تسجيل الدخول
-        JPanel loginPanel = new JPanel();
-        loginPanel.setLayout(new GridBagLayout());
-        loginPanel.setBackground(new Color(245, 245, 245)); // خلفية خفيفة للوحة
-        GridBagConstraints gbc = new GridBagConstraints();
+            gbc.insets = new Insets(10, 10, 10, 10); // Set margins around components
+            gbc.fill = GridBagConstraints.HORIZONTAL; // Components will fill horizontally
+            gbc.gridx = 0; // Start at column 0
+            gbc.gridy = 0; // Start at row 0
 
-        // إعداد الهوامش وتنسيق التخطيط
-        gbc.insets = new Insets(10, 10, 10, 10);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridx = 0;
-        gbc.gridy = 0;
+            // Login label
+            JLabel loginLabel = new JLabel("Log in", SwingConstants.CENTER); // Create a centered login label
+            loginLabel.setFont(new Font("Times New Roman", Font.BOLD, 24)); // Set font style for the label
+            loginLabel.setForeground(new Color(0, 102, 204)); // Set text color to a vibrant blue
+            gbc.gridwidth = 2; // Make the label span across two columns
+            loginPanel.add(loginLabel, gbc); // Add the login label to the panel
 
-        // عنوان واجهة تسجيل الدخول
-        JLabel loginLabel = new JLabel("Log in", SwingConstants.CENTER);
-        loginLabel.setFont(new Font("Times New Roman", Font.BOLD, 24));
-        loginLabel.setForeground(new Color(0, 102, 204)); // لون أزرق جذاب
-        gbc.gridwidth = 2; // توسعة العنوان ليمتد على كامل العرض
-        loginPanel.add(loginLabel, gbc);
+            // ID Number label and text field
+            gbc.gridy++; // Move to the next row
+            gbc.gridwidth = 1; // Reset grid width to 1 for the next label
+            JLabel idLabel = new JLabel("ID Number:"); // Create a label for ID number
+            idLabel.setFont(new Font("Times New Roman", Font.PLAIN, 16)); // Set font style for the label
+            loginPanel.add(idLabel, gbc); // Add ID label to the panel
 
-        // حقل الرقم الجامعي
-        gbc.gridy++;
-        gbc.gridwidth = 1;
-        JLabel idLabel = new JLabel("ID Number:");
-        idLabel.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-        loginPanel.add(idLabel, gbc);
+            gbc.gridx = 1; // Move to the next column for the text field
+            JTextField idField = new JTextField(15); // Create a text field for ID number input
+            idField.setFont(new Font("Times New Roman", Font.PLAIN, 14)); // Set font style for the text field
+            loginPanel.add(idField, gbc); // Add ID text field to the panel
 
-        gbc.gridx = 1;
-        JTextField idField = new JTextField(15);
-        idField.setFont(new Font("Times New Roman", Font.PLAIN, 14));
-        loginPanel.add(idField, gbc);
+            // First Name label and text field
+            gbc.gridx = 0; // Reset column index to 0 for the next label
+            gbc.gridy++; // Move to the next row
+            JLabel firstNameLabel = new JLabel("First Name:"); // Create a label for first name
+            firstNameLabel.setFont(new Font("Times New Roman", Font.PLAIN, 16)); // Set font style for the label
+            loginPanel.add(firstNameLabel, gbc); // Add first name label to the panel
 
-        // حقل الاسم الأول
-        gbc.gridx = 0;
-        gbc.gridy++;
-        JLabel firstNameLabel = new JLabel("First Name:");
-        firstNameLabel.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-        loginPanel.add(firstNameLabel, gbc);
+            gbc.gridx = 1; // Move to the next column for the text field
+            JTextField firstNameField = new JTextField(15); // Create a text field for first name input
+            firstNameField.setFont(new Font("Times New Roman", Font.PLAIN, 14)); // Set font style for the text field
+            loginPanel.add(firstNameField, gbc); // Add first name text field to the panel
 
-        gbc.gridx = 1;
-        JTextField firstNameField = new JTextField(15);
-        firstNameField.setFont(new Font("Times New Roman", Font.PLAIN, 14));
-        loginPanel.add(firstNameField, gbc);
+            // Login button
+            gbc.gridx = 0; // Reset column index to 0 for the button
+            gbc.gridy++; // Move to the next row
+            gbc.gridwidth = 2; // Make the button span across two columns
+            JButton loginButton = new JButton("Login"); // Create the login button
+            styleButton(loginButton); // Apply styling to the button
+            loginPanel.add(loginButton, gbc); // Add button to the panel
 
-        // زر تسجيل الدخول
-        gbc.gridx = 0;
-        gbc.gridy++;
-        gbc.gridwidth = 2;
-        JButton loginButton = new JButton("Login");
-        styleButton(loginButton);
-        loginPanel.add(loginButton, gbc);
-
-        // إضافة واجهة تسجيل الدخول إلى الإطار
-        add(loginPanel, BorderLayout.CENTER);
-
-    }
+            add(loginPanel, BorderLayout.CENTER); // Add the login panel to the center of the frame
+        }
     
-public void page4() {
-    // تفريغ محتويات الإطار الحالي
-    getContentPane().removeAll();
+        // Page 4: Choose a building for locker reservation
+        public void page4() {
+            // Clear the current content pane
+            getContentPane().removeAll();
+            setLayout(new BorderLayout(10, 10)); // Set layout with horizontal and vertical gaps
 
-    // إعداد التخطيط الرئيسي للإطار
-    setLayout(new BorderLayout(10, 10));
+            // Create and style the question label
+            JLabel questionLabel = new JLabel("Which building do you want?", SwingConstants.CENTER);
+            questionLabel.setFont(new Font("Times New Roman", Font.BOLD, 24)); // Set font style
+            questionLabel.setForeground(new Color(0, 102, 204)); // Set text color
+            add(questionLabel, BorderLayout.NORTH); // Add label to the top of the layout
 
-    // إنشاء العنوان
-    JLabel questionLabel = new JLabel("Which building do you want?", SwingConstants.CENTER);
-    questionLabel.setFont(new Font("Times New Roman", Font.BOLD, 24));
-    questionLabel.setForeground(new Color(0, 102, 204)); // لون أزرق جذاب للعناوين
-    add(questionLabel, BorderLayout.NORTH);
+            // Create a panel to hold building options
+            JPanel buildingPanel = new JPanel();
+            buildingPanel.setLayout(new GridLayout(0, 2, 15, 15)); // 2 columns, with gaps
+            buildingPanel.setBackground(new Color(245, 245, 245)); // Set background color
 
-    // إنشاء اللوحة الخاصة بخيارات المباني
-    JPanel buildingPanel = new JPanel();
-    buildingPanel.setLayout(new GridLayout(0, 2, 15, 15)); // تخطيط الشبكة مع عمودين وتباعد مناسب
-    buildingPanel.setBackground(new Color(245, 245, 245)); // لون خلفية خفيف لإبراز الصناديق
+            // Array of building numbers
+            String[] buildingNumbers = {
+                "Building 11", "Building 17", "Building 5", "Building 12",
+                "Building 3", "Building 14", "Building 6", "Building 7",
+                "Building 8", "Building 15", "Building 2", "Building 9",
+                "Building 10", "Building 4", "Building 18", "Building 20"
+            };
 
-    // مصفوفة أرقام المباني المتاحة
-    String[] buildingNumbers = {
-        "Building 11", "Building 17", "Building 5", "Building 12",
-        "Building 3", "Building 14", "Building 6", "Building 7",
-        "Building 8", "Building 15", "Building 2", "Building 9",
-        "Building 10", "Building 4", "Building 18", "Building 20"
-    };
+            // Loop to create building boxes
+            for (String building : buildingNumbers) {
+                JPanel buildingBox = new JPanel(new BorderLayout()); // Each building box
+                buildingBox.setBackground(new Color(220, 220, 220)); // Set background color
+                buildingBox.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createLineBorder(new Color(0, 153, 204), 2), // Line border
+                    BorderFactory.createEmptyBorder(10, 10, 10, 10) // Padding
+                ));
 
-    // إعداد تصميم صناديق المباني وإضافتها إلى اللوحة
-    for (String building : buildingNumbers) {
-        JPanel buildingBox = new JPanel(new BorderLayout());
-        buildingBox.setBackground(new Color(220, 220, 220)); // لون خلفية خفيف لكل صندوق
-        buildingBox.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(0, 153, 204), 2), // إطار بلون أحمر خفيف
-            BorderFactory.createEmptyBorder(10, 10, 10, 10)
-        ));
+                JLabel buildingLabel = new JLabel(building, SwingConstants.CENTER); // Create label for building
+                buildingLabel.setFont(new Font("Arial", Font.BOLD, 16)); // Set font style
+                buildingLabel.setForeground(new Color(50, 50, 50)); // Set label color
+                buildingBox.add(buildingLabel, BorderLayout.CENTER); // Add label to the box
 
-        // نص لعرض رقم المبنى
-        JLabel buildingLabel = new JLabel(building, SwingConstants.CENTER);
-        buildingLabel.setFont(new Font("Arial", Font.BOLD, 16));
-        buildingLabel.setForeground(new Color(50, 50, 50)); // لون رمادي غامق للنص
-        buildingBox.add(buildingLabel, BorderLayout.CENTER);
+                buildingPanel.add(buildingBox); // Add the building box to the main panel
+            }
 
-        // إضافة الصندوق إلى لوحة المباني
-        buildingPanel.add(buildingBox);
+            // Create a scroll pane for the building panel
+            JScrollPane scrollPane = new JScrollPane(buildingPanel);
+            scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); // Always show vertical scrollbar
+
+            add(scrollPane, BorderLayout.CENTER); // Add scroll pane to the center of the layout
     }
 
-    // إضافة اللوحة إلى شريط تمرير لتسهيل التمرير
-    JScrollPane scrollPane = new JScrollPane(buildingPanel);
-    scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        // Page 5: Display locker availability
+        public void page5() {
+            // Clear the current content pane
+            getContentPane().removeAll();
+            setLayout(new BorderLayout(10, 10)); // Set layout with margins
 
-    // إضافة اللوحة الرئيسية إلى الإطار
-    add(scrollPane, BorderLayout.CENTER);
+            // Building label
+            JLabel buildingLabel = new JLabel("Building A - Locker Availability", SwingConstants.CENTER);
+            buildingLabel.setFont(new Font("Times New Roman", Font.BOLD, 24)); // Set font style
+            buildingLabel.setForeground(new Color(0, 102, 204)); // Set text color
+            add(buildingLabel, BorderLayout.NORTH); // Add label to the top of the layout
 
+            // Locker panel
+            JPanel lockerPanel = new JPanel();
+            lockerPanel.setLayout(new GridLayout(5, 5, 5, 5)); // 5 rows and 5 columns with gaps
+            lockerPanel.setBackground(new Color(245, 245, 245)); // Set panel background color
 
-}
+            // Arrays for available and unavailable lockers
+            String[] availableLockers = {
+                "Locker 1", "Locker 2", "Locker 3", "Locker 4", "Locker 5",
+                "Locker 6", "Locker 7", "Locker 8", "Locker 9", "Locker 10",
+                "Locker 11", "Locker 12", "Locker 13", "Locker 14", "Locker 15",
+                "Locker 16", "Locker 17", "Locker 18", "Locker 19", "Locker 20",
+                "Locker 21", "Locker 22", "Locker 23", "Locker 24", "Locker 25"
+            };
 
-    public void page5() {
-        // تفريغ محتويات الإطار الحالي
-        getContentPane().removeAll();
+            String[] unavailableLockers = {
+                "Locker 26", "Locker 27", "Locker 28", "Locker 29", "Locker 30",
+                "Locker 31", "Locker 32", "Locker 33", "Locker 34", "Locker 35",
+                "Locker 36", "Locker 37", "Locker 38", "Locker 39", "Locker 40",
+                "Locker 41", "Locker 42", "Locker 43", "Locker 44", "Locker 45",
+                "Locker 46", "Locker 47", "Locker 48", "Locker 49", "Locker 50"
+            };
 
-        // إعداد التخطيط الرئيسي للإطار
-        setLayout(new BorderLayout(10, 10));
+            // Create panels for available lockers
+            for (String locker : availableLockers) {
+                JPanel panel = new JPanel(new BorderLayout()); // Panel for each locker
+                panel.setBackground(new Color(46, 204, 113)); // Green background for available lockers
+                panel.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createLineBorder(new Color(34, 139, 34), 2), // Dark green border
+                    BorderFactory.createEmptyBorder(10, 10, 10, 10) // Padding
+                ));
 
-        // إنشاء عنوان الصفحة مع اسم المبنى
-        JLabel buildingLabel = new JLabel("Building A - Locker Availability", SwingConstants.CENTER);
-        buildingLabel.setFont(new Font("Times New Roman", Font.BOLD, 24));
-        buildingLabel.setForeground(new Color(0, 102, 204)); // لون أزرق جذاب للعناوين
-        add(buildingLabel, BorderLayout.NORTH);
+                JLabel lockerLabel = new JLabel(locker, SwingConstants.CENTER); // Label for locker
+                lockerLabel.setFont(new Font("Arial", Font.BOLD, 14)); // Set font style
+                lockerLabel.setForeground(Color.WHITE); // White text for contrast
+                panel.add(lockerLabel, BorderLayout.CENTER); // Add label to panel
 
-        // لوحة الخزانات
-        JPanel lockerPanel = new JPanel();
-        lockerPanel.setLayout(new GridLayout(0, 5, 15, 15)); // 5 أعمدة وتباعد 15 بين الصناديق
-        lockerPanel.setBackground(new Color(245, 245, 245)); // خلفية خفيفة للوحة
+                lockerPanel.add(panel); // Add locker panel to lockerPanel
+            }
 
-        // قائمة الخزانات المتاحة وغير المتاحة
-        String[] availableLockers = {
-            "Locker 1", "Locker 2", "Locker 3", "Locker 4", "Locker 5",
-            "Locker 6", "Locker 7", "Locker 8", "Locker 9", "Locker 10",
-            "Locker 11", "Locker 12", "Locker 13", "Locker 14", "Locker 15",
-            "Locker 16", "Locker 17", "Locker 18", "Locker 19", "Locker 20",
-            "Locker 21", "Locker 22", "Locker 23", "Locker 24", "Locker 25"
-        };
+            // Create panels for unavailable lockers
+            for (String locker : unavailableLockers) {
+                JPanel panel = new JPanel(new BorderLayout()); // Panel for each locker
+                panel.setBackground(new Color(231, 76, 60)); // Red background for unavailable lockers
+                panel.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createLineBorder(new Color(192, 57, 43), 2), // Dark red border
+                    BorderFactory.createEmptyBorder(10, 10, 10, 10) // Padding
+                ));
 
-        String[] unavailableLockers = {
-            "Locker 26", "Locker 27", "Locker 28", "Locker 29", "Locker 30",
-            "Locker 31", "Locker 32", "Locker 33", "Locker 34", "Locker 35",
-            "Locker 36", "Locker 37", "Locker 38", "Locker 39", "Locker 40",
-            "Locker 41", "Locker 42", "Locker 43", "Locker 44", "Locker 45",
-            "Locker 46", "Locker 47", "Locker 48", "Locker 49", "Locker 50"
-        };
+                JLabel lockerLabel = new JLabel(locker, SwingConstants.CENTER); // Label for locker
+                lockerLabel.setFont(new Font("Arial", Font.BOLD, 14)); // Set font style
+                lockerLabel.setForeground(Color.WHITE); // White text for contrast
+                panel.add(lockerLabel, BorderLayout.CENTER); // Add label to panel
 
-        // إعداد صناديق الخزانات المتاحة (باللون الأخضر)
-        for (String locker : availableLockers) {
-            JPanel panel = new JPanel(new BorderLayout());
-            panel.setBackground(new Color(46, 204, 113)); // لون أخضر مميز
-            panel.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(34, 139, 34), 2), // إطار أخضر داكن
-                BorderFactory.createEmptyBorder(10, 10, 10, 10)
-            ));
+                lockerPanel.add(panel); // Add locker panel to lockerPanel
+            }
 
-            JLabel lockerLabel = new JLabel(locker, SwingConstants.CENTER);
-            lockerLabel.setFont(new Font("Arial", Font.BOLD, 14));
-            lockerLabel.setForeground(Color.WHITE); // لون النص أبيض
-            panel.add(lockerLabel, BorderLayout.CENTER);
+            // Create a scroll pane for the locker panel
+            JScrollPane scrollPane = new JScrollPane(lockerPanel);
+            scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); // Always show vertical scrollbar
+            add(scrollPane, BorderLayout.CENTER); // Add scroll pane to the center of the layout
+    }
 
-            lockerPanel.add(panel); // إضافة الصندوق إلى لوحة الخزانات
+        // Page 6: Payment options for reservations
+        public void page6() {
+            // Create main panel with a grid layout
+            JPanel panel0 = new JPanel(new GridLayout(4, 0, 10, 10));
+
+            // Sub-panels for organizing components
+            JPanel panel = new JPanel(new GridLayout(1, 2, 10, 10)); // For semester buttons
+            JPanel panel2 = new JPanel(new GridLayout(2, 2, 10, 10)); // For payment buttons
+            JPanel panel3 = new JPanel(new BorderLayout()); // Not used, consider removal
+            JPanel panel4 = new JPanel(new FlowLayout(FlowLayout.RIGHT)); // For semester buttons
+            JPanel panel6 = new JPanel(new FlowLayout(FlowLayout.LEFT)); // For amount input
+            JPanel panel7 = new JPanel(new FlowLayout(FlowLayout.LEFT)); // For amount label and field
+            JPanel panel8 = new JPanel(new FlowLayout(FlowLayout.LEFT)); // For payment header
+            JPanel panel15 = new JPanel(new BorderLayout()); // Main payment panel
+
+            // Semester buttons
+            JButton semester1Button = new JButton("Semester 1");
+            JButton semester2Button = new JButton("Semester 2");
+            styleButton(semester1Button); // Apply styles
+            styleButton(semester2Button);
+            panel.add(semester1Button);
+            panel.add(semester2Button);
+            panel4.add(panel); // Add semester buttons to panel4
+            panel4.setBorder(BorderFactory.createEmptyBorder(20, 20, 10, 10)); // Set margins
+
+            // Amount input section
+            JLabel rs = new JLabel("RS"); // Currency label
+            rs.setFont(new Font("Times New Roman", Font.BOLD, 16)); // Set font
+            JTextField amount = new JTextField(15); // Input field for amount
+            amount.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK)); // Underline border
+            panel7.add(rs);
+            panel7.add(amount);
+            panel6.add(panel7); // Add amount section to panel6
+
+            // Payment header section with icon
+            ImageIcon originalIcon = new ImageIcon("C:\\Users\\s4ooo\\Downloads\\UJ_LockersReservation-main\\UJ_LockersReservation-main\\UJ_LockersReservation\\src\\uj_lockersreservation\\download.png");
+            Image scaledImage = originalIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH); 
+            ImageIcon scaledIcon = new ImageIcon(scaledImage);
+            JLabel ico = new JLabel(scaledIcon); // Icon label
+            JLabel payment = new JLabel("Payment");
+            payment.setFont(new Font("Times New Roman", Font.BOLD, 18)); // Set font for payment label
+            payment.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10)); // Set margins
+            panel8.add(ico);
+            panel8.add(payment);
+
+            // Payment method buttons
+            JButton visa = new JButton("Visa");
+            JButton mada = new JButton("Mada");
+            JButton tamara = new JButton("Tamara");
+            JButton pay = new JButton("Pay");
+            styleButton(visa);
+            styleButton(mada);
+            styleButton(tamara);
+            styleButton(pay);
+            panel2.add(visa);
+            panel2.add(mada);
+            panel2.add(tamara);
+            panel2.add(pay);
+
+            // Add payment header and buttons to the main payment panel
+            panel15.add(panel8, BorderLayout.NORTH);
+            panel15.add(panel2);
+
+            // Cash on delivery button
+            JPanel panel5 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+            JButton cashOnDeliveryButton = new JButton("Cash on Delivery");
+            styleButton(cashOnDeliveryButton); // Apply styles
+            cashOnDeliveryButton.setBackground(new Color(233, 87, 63)); // Set specific background color
+            panel5.add(cashOnDeliveryButton);
+            panel5.setBorder(BorderFactory.createEmptyBorder(10, 20, 20, 10)); // Set margins
+
+            // Add all panels to the main panel
+            panel0.add(panel4);    
+            panel0.add(panel6);    
+            panel0.add(panel15);
+            panel0.add(panel5);    
+
+            panel0.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // Set outer margins
+            add(panel0, BorderLayout.CENTER); // Add main panel to the center
         }
 
-        // إعداد صناديق الخزانات غير المتاحة (باللون الأحمر)
-        for (String locker : unavailableLockers) {
-            JPanel panel = new JPanel(new BorderLayout());
-            panel.setBackground(new Color(231, 76, 60)); // لون أحمر للخزانات غير المتاحة
-            panel.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(192, 57, 43), 2), // إطار أحمر داكن
-                BorderFactory.createEmptyBorder(10, 10, 10, 10)
-            ));
-
-            JLabel lockerLabel = new JLabel(locker, SwingConstants.CENTER);
-            lockerLabel.setFont(new Font("Arial", Font.BOLD, 14));
-            lockerLabel.setForeground(Color.WHITE); // لون النص أبيض
-            panel.add(lockerLabel, BorderLayout.CENTER);
-
-            lockerPanel.add(panel); // إضافة الصندوق إلى لوحة الخزانات
+        // Method to style buttons
+        private void styleButton(JButton button) {
+            button.setFont(new Font("Times New Roman", Font.BOLD, 18)); // Set font style
+            button.setBackground(new Color(0, 153, 204)); // Set background color
+            button.setForeground(Color.WHITE); // Set text color
+            button.setFocusPainted(false); // Remove focus painting
+            button.setBorder(BorderFactory.createEmptyBorder(10, 25, 10, 25)); // Set padding
+            button.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Change cursor to hand
+            button.setOpaque(true); // Make background opaque
         }
 
-        // إضافة لوحة الخزانات إلى شريط تمرير للتمرير العمودي
-        JScrollPane scrollPane = new JScrollPane(lockerPanel);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        add(scrollPane, BorderLayout.CENTER); // إضافة شريط التمرير إلى الإطار
-
 }
-    private void styleButton(JButton button) {
-        button.setFont(new Font("Times New Roman", Font.BOLD, 18));
-        button.setBackground(new Color(0, 153, 204)); // لون أزرق فاتح
-        button.setForeground(Color.WHITE); // لون النص أبيض
-        button.setFocusPainted(false);
-        button.setBorder(BorderFactory.createEmptyBorder(10, 25, 10, 25)); // حواف أكبر
-        button.setCursor(new Cursor(Cursor.HAND_CURSOR)); // مؤشر اليد عند المرور
-        button.setOpaque(true);
-    }
-    public void page6() {
-    // تفريغ محتويات الإطار الحالي
-    //getContentPane().removeAll();
-
-    // إعداد اللوحات
-    JPanel panel0 = new JPanel(new GridLayout(4, 0, 10, 10));
-    JPanel panel = new JPanel(new GridLayout(1, 2, 10, 10)); // لأزرار الفصل
-    JPanel panel2 = new JPanel(new GridLayout(2, 2, 10, 10)); // لأزرار الدفع
-    JPanel panel3 = new JPanel(new BorderLayout()); //
-    JPanel panel4 = new JPanel(new FlowLayout(FlowLayout.RIGHT)); // لأزرار الفصل
-    JPanel panel6 = new JPanel(new FlowLayout(FlowLayout.LEFT)); // حقل المبلغ
-    JPanel panel7 = new JPanel(new FlowLayout(FlowLayout.LEFT)); // رمز العملة
-    JPanel panel8 = new JPanel(new FlowLayout(FlowLayout.LEFT)); // نص "Payment" والأيقونة
-    JPanel panel15 = new JPanel(new BorderLayout()); //payment , الازرار
-
-
-    // تنسيق الأزرار لفصلي الدراسة
-    JButton semester1Button = new JButton("Semester 1");
-    JButton semester2Button = new JButton("Semester 2");
-    styleButton(semester1Button);
-    styleButton(semester2Button);
-    panel.add(semester1Button);
-    panel.add(semester2Button);
-    panel4.add(panel); // إضافة أزرار الفصل إلى panel4
-    panel4.setBorder(BorderFactory.createEmptyBorder(20, 20, 10, 10)); // هوامش لأزرار الفصل
-
-    // حقل العملة والمبلغ
-    JLabel rs = new JLabel("RS");
-    rs.setFont(new Font("Times New Roman", Font.BOLD, 16));
-    JTextField amount = new JTextField(15);
-    amount.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK)); // خط أسفل الحقل
-    panel7.add(rs);
-    panel7.add(amount);
-    panel6.add(panel7);
-
-    // أيقونة ونص "Payment"
-    ImageIcon originalIcon = new ImageIcon("C:\\Users\\s4ooo\\Downloads\\UJ_LockersReservation-main\\UJ_LockersReservation-main\\UJ_LockersReservation\\src\\uj_lockersreservation\\download.png");
-    Image scaledImage = originalIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH); // تغيير الحجم
-    ImageIcon scaledIcon = new ImageIcon(scaledImage);
-    JLabel ico = new JLabel(scaledIcon);
-    JLabel payment = new JLabel("Payment");
-    payment.setFont(new Font("Times New Roman", Font.BOLD, 18));
-    payment.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10)); // هوامش للنص
-    panel8.add(ico);
-    panel8.add(payment);
-
-    // أزرار خيارات الدفع
-    JButton visa = new JButton("Visa");
-    JButton mada = new JButton("Mada");
-    JButton tamara = new JButton("Tamara");
-    JButton pay = new JButton("Pay");
-    styleButton(visa);
-    styleButton(mada);
-    styleButton(tamara);
-    styleButton(pay);
-    panel2.add(visa);
-    panel2.add(mada);
-    panel2.add(tamara);
-    panel2.add(pay);
-    
-    panel15.add(panel8,BorderLayout.NORTH);
-    panel15.add(panel2);
-    
-
-    
-    // زر "الدفع عند الاستلام"
-    JPanel panel5 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-    JButton cashOnDeliveryButton = new JButton("Cash on Delivery");
-    styleButton(cashOnDeliveryButton);
-    cashOnDeliveryButton.setBackground(new Color(233, 87, 63)); // لون أحمر فاتح لزر الدفع عند الاستلام
-    panel5.add(cashOnDeliveryButton);
-    panel5.setBorder(BorderFactory.createEmptyBorder(10, 20, 20, 10)); // هوامش
-
-    // إضافة اللوحات الرئيسية
-    panel0.add(panel4);    // لوحة أزرار الفصول
-    panel0.add(panel6);    // حقل العملة والمبلغ
-    //panel0.add(panel8);    // أيقونة ونص "Payment"
-    panel0.add(panel15);
-    //panel0.add(panel2);    // لوحة خيارات الدفع
-    panel0.add(panel5);    // زر "الدفع عند الاستلام"
-
-    // إعداد الإطار الرئيسي
-    panel0.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // حواف للوحة الرئيسية
-    add(panel0, BorderLayout.CENTER);
-
-    // إعادة رسم الواجهة
-    revalidate();
-    repaint();
-}
-}
-    
-//        public void page6() {
-//            
-//        setTitle("Payment Interface");
-//        JPanel panel0 = new JPanel();
-//        JPanel panel = new JPanel();
-//        JPanel panel2 = new JPanel();
-//        JPanel panel3 = new JPanel();
-//        JPanel panel4 = new JPanel();
-//        JPanel panel5 = new JPanel();   
-//        JPanel panel6 = new JPanel();   
-//        JPanel panel7 = new JPanel();
-//        JPanel panel8 = new JPanel();
-//
-//
-//
-//    /*
-//        panel.setLayout(new GridLayout(1,2,5,5));
-//        panel4.setLayout(new BorderLayout());
-//        JButton semester1Button = new JButton("Semester 1");
-//        JButton semester2Button = new JButton("Semester 2");
-//        panel.add(semester1Button);
-//        panel.add(semester2Button );
-//        panel4.add(panel,BorderLayout.EAST);
-//        
-//        
-//       panel4.setBorder(BorderFactory.createEmptyBorder(25,25,10,10)); // مسافة
-//
-//*/
-//               panel.setLayout(new GridLayout(1,2,5,5));
-////        panel4.setLayout(new BorderLayout());
-//        JButton semester1Button = new JButton("Semester 1");
-//        JButton semester2Button = new JButton("Semester 2");
-//        panel.add(semester1Button);
-//        panel.add(semester2Button );
-//        panel4.add(panel);
-//        
-//        panel4.setLayout(new FlowLayout(FlowLayout.RIGHT)); // ضبط التخطيط لليسار
-//
-//        
-//       panel4.setBorder(BorderFactory.createEmptyBorder(25,25,10,10)); // مسافة
-//
-//       
-//        
-//
-//            
-//        JLabel rs = new JLabel("rs");
-//        JTextField amount= new JTextField(25);
-////        panel6.add(rs);
-////        panel6.add(amount);
-//        
-//        amount.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK)); // خط أسود في الأسفل
-//
-//        panel7.setLayout(new FlowLayout(FlowLayout.LEFT)); // ضبط التخطيط لليسار
-//
-//        panel7.add(rs);
-//        panel7.add(amount);
-//        panel6.setLayout(new FlowLayout(FlowLayout.LEFT)); // ضبط التخطيط لليسار
-//
-//                panel6.add(panel7);
-//
-//    
-//         // إنشاء أيقونة
-////        ImageIcon icon = new ImageIcon(getClass().getResource("/uj_lockersreservation/download.jpg"));
-//        ImageIcon originalIcon = new ImageIcon("C:\\NetBeansProjects\\UJ_LockersReservation\\src\\uj_lockersreservation\\download.png");
-//        Image scaledImage = originalIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH); // تغيير الحجم
-//        ImageIcon scaledIcon = new ImageIcon(scaledImage); // إنشاء ImageIcon جديد بالحجم المصغر
-//        JLabel ico = new JLabel(scaledIcon); // إنشاء JLabel للأيقونة
-//
-////, SwingConstants.LEFT
-//        JLabel payment = new JLabel("Payment");
-//        payment.setBorder(BorderFactory.createEmptyBorder(10,0,0,10)); // مسافة
-//
-//        panel8.add(ico); // إضافة الأيقونة
-//        panel8.add(payment);
-//        panel8.setLayout(new FlowLayout(FlowLayout.LEFT)); // ضبط التخطيط لليسار
-//        
-////t-l-b-r
-//
-//        JButton Mada = new JButton("Mada");
-//        JButton visa = new JButton("Visa");
-//        JButton pay = new JButton("Pay");
-//        JButton Tamara = new JButton("Tamara");
-//
-// 
-//        
-//        panel2.setLayout(new GridLayout(2,2,10,10));
-//
-//        panel2.add(visa);
-//        panel2.add(Mada);
-//        panel2.add(Tamara);
-//        panel2.add(pay);
-//     
-////        panel3.setLayout(new BorderLayout());
-//        panel3.add(panel2);
-//
-//        panel3.setLayout(new FlowLayout(FlowLayout.LEFT)); // ضبط التخطيط لليسار
-//
-////        panel3.setBorder(BorderFactory.createEmptyBorder(0, 150, 0, 150)); //t-l-b-r
-//
-//        
-//        JButton cashOnDeliveryButton = new JButton("Cash on Delivery");
-////        panel5.setLayout(new BorderLayout());
-//        panel5.add(cashOnDeliveryButton);
-////        
-//       
-//       panel5.setLayout(new FlowLayout(FlowLayout.RIGHT)); // ضبط التخطيط لليسار
-//       panel5.setBorder(BorderFactory.createEmptyBorder(10,25,10,10)); // مسافة
-//
-//    panel0.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-//
-//    setLayout(new GridLayout(6,0));
-//    add(panel4,BorderLayout.NORTH);//smestr
-//    //add(new JLabel());
-//        add(panel6);//rs
-//        add(panel8);
-//        add(panel3);//4
-//        add(panel5,BorderLayout.SOUTH);//cash
-//        
-//
-//        pack(); // يجعل الإطار يناسب مكوناته
-//        
-//      
-//            
-//            
-//        }
-//}
