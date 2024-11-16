@@ -1,40 +1,44 @@
+
 package uj_lockersreservation;
 
 import java.awt.*;
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Pattern;
 
 public class login extends JFrame {
 
-    private CardLayout cardLayout; // تعريف CardLayout
-    private JPanel cardPanel; // تعريف لوحة تحتوي على الصفحات
+    private CardLayout cardLayout;
+    private JPanel cardPanel;
+    private static List<UserData> usersDataList = new ArrayList<>(); // ArrayList لتخزين بيانات المستخدمين
 
-    // Constructor to set up the initial frame
+    // تحميل البيانات من الملف عند بدء تشغيل البرنامج
+    static {
+        loadUserData();
+    }
+
     public login() {
         setTitle("UJ Lockers Reservation System");
         setSize(600, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null); // Center the window
+        setLocationRelativeTo(null);
 
-        cardLayout = new CardLayout(); // إعداد CardLayout
-        cardPanel = new JPanel(cardLayout); // إعداد اللوحة التي تحتوي على الصفحات
+        cardLayout = new CardLayout();
+        cardPanel = new JPanel(cardLayout);
 
-        // إضافة الصفحات إلى اللوحة
         cardPanel.add(createPage1(), "Page 1");
         cardPanel.add(createPage2(), "Page 2");
         cardPanel.add(createPage3(), "Page 3");
 
-        // إضافة اللوحة إلى الإطار
         add(cardPanel);
 
         setVisible(true);
     }
 
-    // Page 1: Starting page with login and register options
     private JPanel createPage1() {
-        JPanel page1Panel = new JPanel();
-        page1Panel.setLayout(new GridBagLayout());
+        JPanel page1Panel = new JPanel(new GridBagLayout());
         page1Panel.setBackground(new Color(245, 245, 245));
 
         GridBagConstraints gbc = new GridBagConstraints();
@@ -50,206 +54,134 @@ public class login extends JFrame {
         JButton loginButton = new JButton("Log in");
         styleButton(loginButton);
         gbc.gridy++;
-        loginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cardLayout.show(cardPanel, "Page 3"); // Go to the login page (Page 3)
-            }
-        });
+        loginButton.addActionListener(e -> cardLayout.show(cardPanel, "Page 3"));
         page1Panel.add(loginButton, gbc);
 
         JButton registerButton = new JButton("Register");
         styleButton(registerButton);
         gbc.gridy++;
-        registerButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cardLayout.show(cardPanel, "Page 2"); // Go to the register page (Page 2)
-            }
-        });
+        registerButton.addActionListener(e -> cardLayout.show(cardPanel, "Page 2"));
         page1Panel.add(registerButton, gbc);
 
         return page1Panel;
     }
-
- private JPanel createPage2() {
-    JPanel page2Panel = new JPanel();
-    page2Panel.setLayout(new GridBagLayout());
+private JPanel createPage2() {
+    JPanel page2Panel = new JPanel(new GridBagLayout());
     page2Panel.setBackground(new Color(245, 245, 245));
 
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.insets = new Insets(10, 10, 10, 10);
     gbc.fill = GridBagConstraints.HORIZONTAL;
-    gbc.anchor = GridBagConstraints.WEST; // لضبط المكونات لتكون في الجهة اليسرى
 
-    // عنوان الصفحة
     JLabel signUpLabel = new JLabel("Create a New Account", SwingConstants.CENTER);
     signUpLabel.setFont(new Font("Times New Roman", Font.BOLD, 24));
     signUpLabel.setForeground(new Color(0, 102, 204));
-    gbc.gridwidth = 2; // اتساع كامل للعنوان
-    gbc.gridx = 0;
-    gbc.gridy = 0;
+    gbc.gridwidth = 2;
+    gbc.gridx = 0; gbc.gridy = 0;
     page2Panel.add(signUpLabel, gbc);
 
-    // First Name label and text field
-    gbc.gridy++;
-    gbc.gridwidth = 1;
-    JLabel firstNameLabel = new JLabel("First Name:");
-    firstNameLabel.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-    page2Panel.add(firstNameLabel, gbc);
-
-    gbc.gridx = 1;
     JTextField firstNameField = new JTextField(15);
-    firstNameField.setFont(new Font("Times New Roman", Font.PLAIN, 14));
-    page2Panel.add(firstNameField, gbc);
-
-    // Last Name label and text field
-    gbc.gridx = 0;
-    gbc.gridy++;
-    JLabel lastNameLabel = new JLabel("Last Name:");
-    lastNameLabel.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-    page2Panel.add(lastNameLabel, gbc);
-
-    gbc.gridx = 1;
     JTextField lastNameField = new JTextField(15);
-    lastNameField.setFont(new Font("Times New Roman", Font.PLAIN, 14));
-    page2Panel.add(lastNameField, gbc);
-
-    // Email label and text field
-    gbc.gridx = 0;
-    gbc.gridy++;
-    JLabel emailLabel = new JLabel("Email:");
-    emailLabel.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-    page2Panel.add(emailLabel, gbc);
-
-    gbc.gridx = 1;
     JTextField emailField = new JTextField(15);
-    emailField.setFont(new Font("Times New Roman", Font.PLAIN, 14));
-    page2Panel.add(emailField, gbc);
-
-    // ID Number label and text field
-    gbc.gridx = 0;
-    gbc.gridy++;
-    JLabel idLabel = new JLabel("ID Number:");
-    idLabel.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-    page2Panel.add(idLabel, gbc);
-
-    gbc.gridx = 1;
     JTextField idField = new JTextField(15);
-    idField.setFont(new Font("Times New Roman", Font.PLAIN, 14));
-    page2Panel.add(idField, gbc);
-
-    // Password label and text field
-    gbc.gridx = 0;
-    gbc.gridy++;
-    JLabel passwordLabel = new JLabel("Password:");
-    passwordLabel.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-    page2Panel.add(passwordLabel, gbc);
-
-    gbc.gridx = 1;
     JPasswordField passwordField = new JPasswordField(15);
-    passwordField.setFont(new Font("Times New Roman", Font.PLAIN, 14));
-    page2Panel.add(passwordField, gbc);
 
-    // Register button
+    addField(page2Panel, "First Name:", firstNameField, gbc, 1);
+    addField(page2Panel, "Last Name:", lastNameField, gbc, 2);
+    addField(page2Panel, "Email:", emailField, gbc, 3);
+    addField(page2Panel, "ID Number:", idField, gbc, 4);
+    addField(page2Panel, "Password:", passwordField, gbc, 5);
+
+    JButton signUpSubmitButton = new JButton("Register");
+    styleButton(signUpSubmitButton);
+    signUpSubmitButton.setPreferredSize(new Dimension(300, 40)); // تحديد الحجم هنا
     gbc.gridx = 0;
     gbc.gridy++;
     gbc.gridwidth = 2;
-    JButton signUpSubmitButton = new JButton("Register");
-    styleButton(signUpSubmitButton);
-    signUpSubmitButton.setBackground((new Color(0, 153, 204)));
-    signUpSubmitButton.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            cardLayout.show(cardPanel, "Page 3"); // Go back to the first page
+    signUpSubmitButton.addActionListener(e -> {
+        String id = idField.getText();
+        String firstName = firstNameField.getText();
+        String lastName = lastNameField.getText();
+        String email = emailField.getText();
+        String password = new String(passwordField.getPassword());
+
+        if (isValidInput(id, firstName, lastName, email, password)) {
+            saveData(new UserData(id, firstName, lastName, email, password));
+            JOptionPane.showMessageDialog(this, "Account created successfully!");
+            cardLayout.show(cardPanel, "Page 3");
         }
     });
     page2Panel.add(signUpSubmitButton, gbc);
 
-    // Back button (placing it on the bottom with proper alignment)
-    gbc.gridy++;
     JButton backButton = new JButton("Back");
     styleButton(backButton);
-    backButton.setBackground(new Color(233, 87, 63));
-    backButton.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            cardLayout.show(cardPanel, "Page 1"); // Go back to the first page
-        }
-    });
+    gbc.gridy++;
+    backButton.addActionListener(e -> cardLayout.show(cardPanel, "Page 1"));
     page2Panel.add(backButton, gbc);
 
     return page2Panel;
 }
 
-private JPanel createPage3() {
-    JPanel page3Panel = new JPanel();
-    page3Panel.setLayout(new GridBagLayout());
+
+    public JPanel createPage3() {
+    JPanel page3Panel = new JPanel(new GridBagLayout());
     page3Panel.setBackground(new Color(245, 245, 245));
 
     GridBagConstraints gbc = new GridBagConstraints();
-    gbc.insets = new Insets(10, 10, 10, 10); // تحديد الهوامش
-    gbc.fill = GridBagConstraints.HORIZONTAL; // ملء العرض بالكامل
+    gbc.insets = new Insets(10, 10, 10, 10);
+    gbc.fill = GridBagConstraints.HORIZONTAL;  // إضافة هذه لضبط أبعاد المكونات
 
-    // عنوان الصفحة (Log in)
+    // إضافة عنوان الدخول
     JLabel loginLabel = new JLabel("Log in", SwingConstants.CENTER);
     loginLabel.setFont(new Font("Times New Roman", Font.BOLD, 24));
     loginLabel.setForeground(new Color(0, 102, 204));
-    gbc.gridwidth = 2; // عنوان الصفحة يشغل المساحة بالكامل
-    gbc.gridx = 0;
-    gbc.gridy = 0;
+    gbc.gridwidth = 2; gbc.gridx = 0; gbc.gridy = 0;
     page3Panel.add(loginLabel, gbc);
 
-    // ID Number label and text field
-    gbc.gridy++; // الانتقال إلى الصف التالي
-    gbc.gridwidth = 1; // تأكيد عرض الحقل في عمود واحد
-    JLabel idLabel = new JLabel("ID Number:");
-    idLabel.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-    page3Panel.add(idLabel, gbc);
-
-    gbc.gridx = 1; // الانتقال إلى العمود الثاني
+    // حقول النص مع ضبط الأبعاد
     JTextField idField = new JTextField(15);
-    idField.setFont(new Font("Times New Roman", Font.PLAIN, 14));
-    page3Panel.add(idField, gbc);
+    JPasswordField passwordField = new JPasswordField(15);
 
-    // First Name label and text field
-    gbc.gridx = 0; // العودة إلى العمود الأول
-    gbc.gridy++; // الانتقال إلى الصف التالي
-    JLabel firstNameLabel = new JLabel("First Name:");
-    firstNameLabel.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-    page3Panel.add(firstNameLabel, gbc);
+    // إضافة الحقول مع التسميات
+    addField(page3Panel, "ID Number:", idField, gbc, 1);
+    addField(page3Panel, "Password:", passwordField, gbc, 2);
 
-    gbc.gridx = 1; // الانتقال إلى العمود الثاني
-    JTextField firstNameField = new JTextField(15);
-    firstNameField.setFont(new Font("Times New Roman", Font.PLAIN, 14));
-    page3Panel.add(firstNameField, gbc);
-
-    // Login button
-    gbc.gridx = 0;
-    gbc.gridy++; // الانتقال إلى الصف التالي
-    gbc.gridwidth = 2; // زر تسجيل الدخول يشغل المساحة بالكامل
+    // زر الدخول
     JButton loginButton = new JButton("Login");
     styleButton(loginButton);
-    loginButton.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            dispose(); // إغلاق نافذة تسجيل الدخول الحالية
-
+    gbc.gridwidth = 2;  // تأكيد أن الزر يمتد عبر العمودين
+    gbc.gridx = 0;  // ضبط الزر في عمود 0
+    gbc.gridy++;  // الانتقال للصف التالي
+    loginButton.setPreferredSize(new Dimension(300, 40)); // تحديد حجم الزر
+    loginButton.addActionListener(e -> {
+        String userId = idField.getText();
+        String password = new String(passwordField.getPassword());
+        if (isUserExists(userId, password)) {
+            dispose();
             Locker lockerFrame = new Locker();
-            lockerFrame.page4(); // فتح صفحة الخزائن
+            lockerFrame.setCurrentUserID(userId);
+            lockerFrame.page4();
             lockerFrame.setSize(600, 500);
             lockerFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             lockerFrame.setLocationRelativeTo(null);
             lockerFrame.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "Invalid ID or wrong password. Please register first or check the password.");
         }
     });
     page3Panel.add(loginButton, gbc);
 
+    // زر التسجيل
+    JButton registerButton = new JButton("Register");
+    styleButton(registerButton);
+    gbc.gridy++;  // الانتقال للصف التالي
+    registerButton.setPreferredSize(new Dimension(300, 40)); // تحديد حجم الزر
+    registerButton.addActionListener(e -> cardLayout.show(cardPanel, "Page 2"));
+    page3Panel.add(registerButton, gbc);
+
     return page3Panel;
 }
 
-
-    // Method to style buttons
     private void styleButton(JButton button) {
         button.setFont(new Font("Times New Roman", Font.BOLD, 18));
         button.setBackground(new Color(0, 153, 204));
@@ -260,4 +192,85 @@ private JPanel createPage3() {
         button.setOpaque(true);
     }
 
+    public void saveData(UserData userData) {
+        usersDataList.add(userData);
+        saveUserDataToFile();
+    }
+
+    private static void saveUserDataToFile() {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("usersDataList.ser"))) {
+            oos.writeObject(usersDataList);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void loadUserData() {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("usersDataList.ser"))) {
+            usersDataList = (List<UserData>) ois.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("No previous data found. Starting fresh.");
+        }
+    }
+
+    private boolean isUserExists(String id, String firstName) {
+        return usersDataList.stream().anyMatch(user -> user.getId().equals(id) && user.getpassword().equalsIgnoreCase(firstName));
+    }
+
+    private boolean isValidInput(String id, String firstName, String lastName, String email, String password) {
+        if (!id.matches("\\d{7}")) {
+            JOptionPane.showMessageDialog(this, "ID must be exactly 7 digits.");
+            return false;
+        }
+        if (!firstName.matches("[a-zA-Z]+") || !lastName.matches("[a-zA-Z]+")) {
+            JOptionPane.showMessageDialog(this, "Names must contain letters only.");
+            return false;
+        }
+        if (!Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)$").matcher(email).matches()) {
+            JOptionPane.showMessageDialog(this, "Invalid email format.");
+            return false;
+        }
+        if (password.length() < 6) {
+            JOptionPane.showMessageDialog(this, "Password must be at least 6 characters long.");
+            return false;
+        }
+        return true;
+    }
+
+    private void addField(JPanel panel, String label, JTextField field, GridBagConstraints gbc, int y) {
+        gbc.gridx = 0; gbc.gridy = y; gbc.gridwidth = 1;
+        JLabel jLabel = new JLabel(label);
+        jLabel.setFont(new Font("Times New Roman", Font.PLAIN, 16));
+        panel.add(jLabel, gbc);
+
+        gbc.gridx = 1;
+        panel.add(field, gbc);
+    }
+}
+
+// UserData class for serialization
+class UserData implements Serializable {
+    private String id;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String password;
+
+    public UserData(String id, String firstName, String lastName, String email, String password) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getpassword() {
+        return password;
+    }
+
+    // Getters for other fields if needed
 }

@@ -4,37 +4,42 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Locker extends JFrame {
-    
-    private String selectedBuilding = ""; // Variable to store the selected building
-    
-        // Constructor to initialize the frame
+
+    private String selectedBuilding = "";
+    private String currentUserID;
+    private Map<String, ReservationData> lockerStatus; // حالة كل خزانة (محجوزة أو متاحة)
+
     public Locker() {
         setTitle("Locker Reservation");
-        setSize(800, 600); // Set window size
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Exit application when window is closed
-        page4(); // Initial page display
+        setSize(800, 600);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        lockerStatus = loadLockerStatus(); // تحميل حالة الخزائن من الملف
+        page4();
+    }
+    
+    // Setter for currentUserID to be called after successful login
+    public void setCurrentUserID(String userID) {
+        this.currentUserID = userID;
     }
 
-    // Page 4: Choose a building for locker reservation
     public void page4() {
-        // Clear the current content pane and set up layout
         getContentPane().removeAll();
-        setLayout(new BorderLayout(10, 10)); // Set layout with horizontal and vertical gaps
+        setLayout(new BorderLayout(10, 10));
 
-        // Create and style the question label
         JLabel questionLabel = new JLabel("Which building do you want?", SwingConstants.CENTER);
-        questionLabel.setFont(new Font("Times New Roman", Font.BOLD, 24)); // Set font style
-        questionLabel.setForeground(new Color(0, 102, 204)); // Set text color
-        add(questionLabel, BorderLayout.NORTH); // Add label to the top of the layout
+        questionLabel.setFont(new Font("Times New Roman", Font.BOLD, 24));
+        questionLabel.setForeground(new Color(0, 102, 204));
+        add(questionLabel, BorderLayout.NORTH);
 
-        // Create a panel to hold building options
         JPanel buildingPanel = new JPanel();
-        buildingPanel.setLayout(new GridLayout(0, 2, 15, 15)); // 2 columns, with gaps
-        buildingPanel.setBackground(new Color(245, 245, 245)); // Set background color
+        buildingPanel.setLayout(new GridLayout(0, 2, 15, 15));
+        buildingPanel.setBackground(new Color(245, 245, 245));
 
-        // Array of building numbers
         String[] buildingNumbers = {
             "Building 11", "Building 17", "Building 5", "Building 12",
             "Building 3", "Building 14", "Building 6", "Building 7",
@@ -42,136 +47,263 @@ public class Locker extends JFrame {
             "Building 10", "Building 4", "Building 18", "Building 20"
         };
 
-        // Loop to create buttons for each building
         for (String building : buildingNumbers) {
-            // Create a button for each building
             JButton buildingButton = new JButton(building);
-            buildingButton.setFont(new Font("Arial", Font.BOLD, 16)); // Set font style
-            buildingButton.setBackground(new Color(220, 220, 220)); // Set button background color
-            buildingButton.setForeground(new Color(50, 50, 50)); // Set button text color
+            buildingButton.setFont(new Font("Arial", Font.BOLD, 16));
+            buildingButton.setBackground(new Color(220, 220, 220));
+            buildingButton.setForeground(new Color(50, 50, 50));
 
-            // Add an ActionListener to handle the selection of a building
             buildingButton.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    selectedBuilding = building; // Save selected building name
-                    System.out.println("Selected Building: " + selectedBuilding); // Debug print
-                    page5(); // Display locker availability for the selected building
+                    selectedBuilding = building;
+                    lockerStatus = loadLockerStatus(); // تحميل حالة الخزائن للمبنى المحدد فقط
+                    page5(currentUserID);
                 }
             });
 
-            buildingPanel.add(buildingButton); // Add the button to the panel
+            buildingPanel.add(buildingButton);
         }
 
-        // Create a scroll pane for the building panel
         JScrollPane scrollPane = new JScrollPane(buildingPanel);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); // Always show vertical scrollbar
-        add(scrollPane, BorderLayout.CENTER); // Add scroll pane to the center of the layout
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        add(scrollPane, BorderLayout.CENTER);
 
-        // Update the frame to reflect changes
+      
+        // زر العودة إلى صفحة تسجيل الدخول
+        JButton backButton = new JButton("Back to Login");
+        styleButton(backButton); // تطبيق التنسيق على الزر
+        backButton.addActionListener(e -> {
+            // العودة إلى صفحة تسجيل الدخول
+            getContentPane().removeAll();
+            login loginPage = new login();
+            dispose(); // إغلاق الـ JFrame الحالي
+            revalidate();
+            repaint();
+        });
+        add(backButton, BorderLayout.SOUTH); // إضافة الزر في أسفل الصفحة
+
         revalidate();
         repaint();
     }
 
-    // Page 5: Show available lockers for the selected building
-// Page 5: Show available lockers for the selected building
-public void page5() {
-    // Clear the current content pane and set up layout
+
+    public void page5(String currentUserID) {
     getContentPane().removeAll();
-    setLayout(new BorderLayout(10, 10)); // Set layout with margins
+    setLayout(new BorderLayout(10, 10));
 
-    // Building label
     JLabel buildingLabel = new JLabel(selectedBuilding + " - Locker Availability", SwingConstants.CENTER);
-    buildingLabel.setFont(new Font("Times New Roman", Font.BOLD, 24)); // Set font style
-    buildingLabel.setForeground(new Color(0, 102, 204)); // Set text color
-    add(buildingLabel, BorderLayout.NORTH); // Add label to the top of the layout
+    buildingLabel.setFont(new Font("Times New Roman", Font.BOLD, 24));
+    buildingLabel.setForeground(new Color(0, 102, 204));
+    add(buildingLabel, BorderLayout.NORTH);
+    
+    
+        // إضافة زر العودة إلى صفحة المباني
+        JButton backButton = new JButton("Back to Buildings");
+        styleButton(backButton); // تطبيق التنسيق على الزر
+        backButton.addActionListener(e -> page4()); // العودة إلى صفحة المباني عند الضغط على الزر
+        add(backButton, BorderLayout.SOUTH);
 
-    // Locker panel
+
+
+    // تحقق مما إذا كان لدى المستخدم حجز
+    String reservedLockerKey = userHasReservationInBuilding(currentUserID, selectedBuilding);
+    if (reservedLockerKey != null) {
+        String[] parts = reservedLockerKey.split(":"); // تقسيم المفتاح
+        String reservedLockerName = parts[1]; // اسم اللوكر
+
+        JLabel reservationInfoLabel = new JLabel("You already have a reservation for " + reservedLockerName + " in " + selectedBuilding + ".", SwingConstants.CENTER);
+        reservationInfoLabel.setFont(new Font("Arial", Font.ITALIC, 16));
+        reservationInfoLabel.setForeground(Color.RED);
+       
+            // إنشاء JPanel لتجميع النص وزر العودة معًا
+            JPanel bottomPanel = new JPanel();
+            bottomPanel.setLayout(new BorderLayout());  // استخدم BorderLayout لترتيب النص والزر
+            bottomPanel.add(reservationInfoLabel, BorderLayout.NORTH); // إضافة النص في الشمال
+            bottomPanel.add(backButton, BorderLayout.SOUTH); // إضافة الزر في الجنوب
+
+            // تطبيق التنسيق على الزر
+            styleButton(backButton);
+            backButton.addActionListener(e -> page4()); // العودة إلى صفحة المباني عند الضغط على الزر
+
+            // إضافة JPanel (bottomPanel) إلى الجزء السفلي من الواجهة
+            add(bottomPanel, BorderLayout.SOUTH);
+        }
+
     JPanel lockerPanel = new JPanel();
-    lockerPanel.setLayout(new GridLayout(5, 5, 5, 5)); // 5 rows and 5 columns with gaps
-    lockerPanel.setBackground(new Color(245, 245, 245)); // Set panel background color
+    lockerPanel.setLayout(new GridLayout(5, 5, 5, 5));
+    lockerPanel.setBackground(new Color(245, 245, 245));
 
-    // Arrays for available and unavailable lockers
-    String[] availableLockers = {
-        "Locker 1", "Locker 2", "Locker 3", "Locker 4", "Locker 5",
-        "Locker 6", "Locker 7", "Locker 8", "Locker 9", "Locker 10",
-        "Locker 11", "Locker 12", "Locker 13", "Locker 14", "Locker 15",
-        "Locker 16", "Locker 17", "Locker 18", "Locker 19", "Locker 20",
-        "Locker 21", "Locker 22", "Locker 23", "Locker 24", "Locker 25"
-    };
+    for (int i = 1; i <= 50; i++) {
+    String lockerName = "Locker " + i;
+    String lockerKey = selectedBuilding + ":" + lockerName;
+    JButton lockerButton = new JButton(lockerName);
+    lockerButton.setFont(new Font("Arial", Font.BOLD, 14));
 
-    String[] unavailableLockers = {
-        "Locker 26", "Locker 27", "Locker 28", "Locker 29", "Locker 30",
-        "Locker 31", "Locker 32", "Locker 33", "Locker 34", "Locker 35",
-        "Locker 36", "Locker 37", "Locker 38", "Locker 39", "Locker 40",
-        "Locker 41", "Locker 42", "Locker 43", "Locker 44", "Locker 45",
-        "Locker 46", "Locker 47", "Locker 48", "Locker 49", "Locker 50"
-    };
+    ReservationData reservationData = lockerStatus.get(lockerKey);
+    boolean isAvailable = (reservationData == null || reservationData.isAvailable());
 
-    // Create panels for available lockers (Green)
-    for (String locker : availableLockers) {
-        JButton lockerButton = new JButton(locker); // Create a button for each locker
-        lockerButton.setFont(new Font("Arial", Font.BOLD, 14)); // Set font style
-        lockerButton.setBackground(new Color(46, 204, 113)); // Green background for available lockers
-        lockerButton.setForeground(Color.WHITE); // White text for contrast
-        lockerButton.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(34, 139, 34), 2), // Dark green border
-            BorderFactory.createEmptyBorder(10, 10, 10, 10) // Padding
-        ));
-
-        // Add an ActionListener to handle locker selection
-        lockerButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Locker Selected: " + locker); // Debug print
-                // Instantiate the Payment class and navigate to the payment page
-                Payment paymentPage = new Payment();
-                paymentPage.page6(); // Call page6() to show the payment options
-                paymentPage.setSize(600, 500);
-                paymentPage.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                paymentPage.setLocationRelativeTo(null);
-                paymentPage.setVisible(true); // Make Locker frame visible
-            }
-        });
-
-        lockerPanel.add(lockerButton); // Add locker button to lockerPanel
+    // تحقق إذا كان المستخدم لديه حجز في هذا المبنى
+    if (reservedLockerKey != null) {
+        lockerButton.setBackground(new Color(128, 128, 128)); // لون رمادي للخزانات المحجوزة
+        lockerButton.setForeground(Color.WHITE);
+        lockerButton.setEnabled(false); // تعطيل الزر
+    } else if (isAvailable) {
+        lockerButton.setBackground(new Color(46, 204, 113));
+        lockerButton.setForeground(Color.WHITE);
+        lockerButton.addActionListener(e -> reserveLocker(lockerKey, lockerButton, currentUserID, lockerName));
+    } else {
+        lockerButton.setBackground(new Color(231, 76, 60));
+        lockerButton.setForeground(Color.WHITE);
+        lockerButton.setEnabled(false); // تعطيل الزر إذا كانت محجوزة
     }
 
-    // Create panels for unavailable lockers (Red)
-    for (String locker : unavailableLockers) {
-        JButton lockerButton = new JButton(locker); // Create a button for each locker
-        lockerButton.setFont(new Font("Arial", Font.BOLD, 14)); // Set font style
-        lockerButton.setBackground(new Color(231, 76, 60)); // Red background for unavailable lockers
-        lockerButton.setForeground(Color.WHITE); // White text for contrast
-        lockerButton.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(192, 57, 43), 2), // Dark red border
-            BorderFactory.createEmptyBorder(10, 10, 10, 10) // Padding
-        ));
+    lockerPanel.add(lockerButton);
+}
 
-        // Add an ActionListener to show a message when selecting an unavailable locker
-        lockerButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "This locker is already reserved.", "Locker Reserved", JOptionPane.INFORMATION_MESSAGE);
-            }
-        });
 
-        lockerPanel.add(lockerButton); // Add locker button to lockerPanel
-    }
-
-    // Create a scroll pane for the locker panel
     JScrollPane scrollPane = new JScrollPane(lockerPanel);
-    scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); // Always show vertical scrollbar
-    add(scrollPane, BorderLayout.CENTER); // Add scroll pane to the center of the layout
+    scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+    add(scrollPane, BorderLayout.CENTER);
 
-    // Update the frame to reflect changes
     revalidate();
     repaint();
 }
 
-    public static void main(String[] args) {
-        // Launch the Locker frame
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                new Locker().setVisible(true);
+    // Method to reserve a locker
+private void reserveLocker(String lockerKey, JButton lockerButton, String currentUserID, String lockerName) {
+    String building = lockerKey.split(":")[0]; // استخراج رقم المبنى من المفتاح
+
+    // تحقق مما إذا كان المستخدم لديه أكثر من لوكر محجوز في مباني مختلفة
+    int reservedCount = countReservedLockersInDifferentBuildings(currentUserID);
+    if (reservedCount >= 2) {
+        JOptionPane.showMessageDialog(this, "You can only reserve lockers in up to two different buildings.");
+        return;
+    }
+
+    // تحقق مما إذا كان المستخدم لديه حجز في نفس المبنى
+    String reservedLockerKey = userHasReservationInBuilding(currentUserID, building);
+    if (reservedLockerKey != null) {
+        JOptionPane.showMessageDialog(this, "You already have a reservation in " + building + ". You cannot reserve another locker in the same building.");
+        return;
+    }
+
+    // إذا لم يكن لدى المستخدم حجز في نفس المبنى، استمر في حجز اللوكر
+    lockerButton.setBackground(new Color(231, 76, 60));
+    lockerStatus.put(lockerKey, new ReservationData(false, currentUserID)); // تعيين حالة الخزانة كمحجوزة مع معرف المستخدم
+    saveLockerStatus(); // حفظ الحالة في الملف
+
+    // فتح نافذة الدفع
+    Payment paymentPage = new Payment(currentUserID, lockerName, selectedBuilding);
+    paymentPage.page6();
+    paymentPage.setSize(600, 500);
+    paymentPage.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    paymentPage.setLocationRelativeTo(null);
+    paymentPage.setVisible(true);
+}
+
+private int countReservedLockersInDifferentBuildings(String userID) {
+    int count = 0;
+    for (Map.Entry<String, ReservationData> entry : lockerStatus.entrySet()) {
+        if (!entry.getValue().isAvailable() && entry.getValue().getUserID().equals(userID)) {
+            String building = entry.getKey().split(":")[0];
+            count++;
+        }
+    }
+    return count;
+}
+
+private String userHasReservationInBuilding(String userID, String building) {
+    for (Map.Entry<String, ReservationData> entry : lockerStatus.entrySet()) {
+        if (!entry.getValue().isAvailable() && entry.getValue().getUserID().equals(userID) &&
+            entry.getKey().startsWith(building + ":")) {
+            return entry.getKey(); // ارجع المفتاح الخاص باللوكر المحجوز
+        }
+    }
+    return null; // لا يوجد حجز في هذا المبنى
+}
+
+
+    private Map<String, ReservationData> loadLockerStatus() {
+        Map<String, ReservationData> status = new HashMap<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader("userData.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.startsWith("Locker:")) {
+                    String[] parts = line.split(":");
+                    if (parts.length == 5) {
+                        String lockerKey = parts[1] + ":" + parts[2];
+                        boolean isAvailable = Boolean.parseBoolean(parts[3]);
+                        String userID = parts[4]; // معرف المستخدم
+                        status.put(lockerKey, new ReservationData(isAvailable, userID));
+                    }
+                }
             }
-        });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return status;
+    }
+
+    private void saveLockerStatus() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("userData.txt"))) {
+            for (Map.Entry<String, ReservationData> entry : lockerStatus.entrySet()) {
+                String[] parts = entry.getKey().split(":");
+                String building = parts[0];
+                String lockerName = parts[1];
+                ReservationData reservation = entry.getValue();
+                writer.write("Locker:" + building + ":" + lockerName + ":" + reservation.isAvailable() + ":" + reservation.getUserID() + "\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+        // الدالة لتنسيق الأزرار
+private void styleButton(JButton button) {
+    // تعيين النص والخلفية واللون
+    button.setFont(new Font("Times New Roman", Font.BOLD, 18));
+    button.setBackground(new Color(0, 153, 204));  // اللون الأزرق
+    button.setForeground(Color.WHITE);
+    button.setFocusPainted(false);  // إزالة التأثير عند التركيز على الزر
+    button.setBorder(BorderFactory.createLineBorder(new Color(0, 153, 204), 2));  // إضافة حدود للزر
+    button.setCursor(new Cursor(Cursor.HAND_CURSOR));  // تغيير المؤشر إلى يد عند التمرير
+    button.setOpaque(true);  // جعل الزر غير شفاف
+
+    // تحديد الحجم ليكون مستطيل
+    button.setPreferredSize(new Dimension(200, 50));  // عرض 200 بكسل وارتفاع 50 بكسل
+
+    // إضافة تأثير عند التمرير
+    button.addMouseListener(new java.awt.event.MouseAdapter() {
+        public void mouseEntered(java.awt.event.MouseEvent evt) {
+            button.setBackground(new Color(0, 122, 204));  // تغيير اللون عند التمرير
+        }
+
+        public void mouseExited(java.awt.event.MouseEvent evt) {
+            button.setBackground(new Color(0, 153, 204));  // إعادة اللون الأصلي عند الخروج
+        }
+    });
+}
+
+}
+
+class ReservationData {
+    private boolean isAvailable;
+    private String userID;
+
+    public ReservationData(boolean isAvailable, String userID) {
+        this.isAvailable = isAvailable;
+        this.userID = userID;
+    }
+
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setAvailable(boolean available) {
+        isAvailable = available;
     }
 }

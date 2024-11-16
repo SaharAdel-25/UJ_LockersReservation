@@ -1,5 +1,10 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ */
 
 package uj_lockersreservation;
+
+
 
 import javax.swing.JFrame;
 
@@ -20,9 +25,3 @@ public class UJ_LockersReservation extends JFrame {
         frame.setVisible(true); // Show the frame
     }
 }
-
-
-//
-
-    
-    
