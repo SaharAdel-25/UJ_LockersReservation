@@ -323,9 +323,16 @@ private static void loadUserData() {
             JOptionPane.showMessageDialog(this, "Password must be at least 6 characters long.");
             return false;
         }
+           if (isIdExists(id)) { // تحقق إذا كان الـ ID موجود مسبقًا
+            JOptionPane.showMessageDialog(this, "This ID is already taken. Please use a different ID.");
+            return false;
+        }
         return true;
     }
-
+    // دالة للتحقق من وجود ID مسبقًا
+    private boolean isIdExists(String id) {
+        return usersDataList.stream().anyMatch(user -> user.getId().equals(id));
+    }
     private void addField(JPanel panel, String label, JTextField field, GridBagConstraints gbc, int y) {
         gbc.gridx = 0; gbc.gridy = y; gbc.gridwidth = 1;
         JLabel jLabel = new JLabel(label);
