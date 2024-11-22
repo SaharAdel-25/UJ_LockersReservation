@@ -5,8 +5,10 @@ import java.awt.*;
 import javax.swing.*;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
+import uj_lockersreservation.UserData.CurrentUserData;
 
 public class login extends JFrame {
 
@@ -91,6 +93,8 @@ private JPanel createPage2() {
     addField(page2Panel, "Email:", emailField, gbc, 3);
     addField(page2Panel, "ID Number:", idField, gbc, 4);
     addField(page2Panel, "Password:", passwordField, gbc, 5);
+    
+
 
     JButton signUpSubmitButton = new JButton("Register");
     styleButton(signUpSubmitButton);
@@ -108,8 +112,11 @@ private JPanel createPage2() {
         if (isValidInput(id, firstName, lastName, email, password)) {
             saveData(new UserData(id, firstName, lastName, email, password));
             JOptionPane.showMessageDialog(this, "Account created successfully!");
+                        // حفظ الأسماء في CurrentUserData
+            CurrentUserData.setFirstName(firstName);
+            CurrentUserData.setLastName(lastName);
             cardLayout.show(cardPanel, "Page 3");
-        }
+}
     });
     page2Panel.add(signUpSubmitButton, gbc);
 
@@ -145,7 +152,9 @@ private JPanel createPage2() {
     // إضافة الحقول مع التسميات
     addField(page3Panel, "ID Number:", idField, gbc, 1);
     addField(page3Panel, "Password:", passwordField, gbc, 2);
-
+   // عرض الاسم الأول والاسم الأخير في صفحة الدخول
+//    String firstName = CurrentUserData.getFirstName();
+//    String lastName = CurrentUserData.getLastName();
     // زر الدخول
     JButton loginButton = new JButton("Login");
     styleButton(loginButton);
@@ -154,21 +163,28 @@ private JPanel createPage2() {
     gbc.gridy++;  // الانتقال للصف التالي
     loginButton.setPreferredSize(new Dimension(300, 40)); // تحديد حجم الزر
     loginButton.addActionListener(e -> {
-        String userId = idField.getText();
-        String password = new String(passwordField.getPassword());
-        if (isUserExists(userId, password)) {
-            dispose();
-            Locker lockerFrame = new Locker();
-            lockerFrame.setCurrentUserID(userId);
-            lockerFrame.page4();
-            lockerFrame.setSize(600, 500);
-            lockerFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            lockerFrame.setLocationRelativeTo(null);
-            lockerFrame.setVisible(true);
-        } else {
-            JOptionPane.showMessageDialog(this, "Invalid ID or wrong password. Please register first or check the password.");
-        }
-    });
+    String userId = idField.getText();
+    String password = new String(passwordField.getPassword());
+    UserData loggedInUser = getUserIfExists(userId, password);
+
+    if (loggedInUser != null) {
+        // تعيين البيانات للمستخدم الحالي
+        CurrentUserData.setFirstName(loggedInUser.getFirstName());
+        CurrentUserData.setLastName(loggedInUser.getLastName());
+
+        // فتح واجهة اللوكر
+        dispose();
+        Locker lockerFrame = new Locker(userId, loggedInUser.getFirstName(), loggedInUser.getLastName());
+        lockerFrame.setSize(600, 500);
+        lockerFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        lockerFrame.setLocationRelativeTo(null);
+        lockerFrame.setVisible(true);
+
+    } else {
+        JOptionPane.showMessageDialog(this, "Invalid ID or wrong password. Please register first or check the password.");
+    }
+});
+
     page3Panel.add(loginButton, gbc);
 
     // زر التسجيل
@@ -196,6 +212,72 @@ private JPanel createPage2() {
         usersDataList.add(userData);
         saveUserDataToFile();
     }
+    
+    /*
+    
+    private static void saveUserDataToFile() {
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter("usersDataList.txt", true))) {  // Open in append mode
+        // If the file is empty, write the header
+        if (new File("usersDataList.txt").length() == 0) {
+            // Header formatting with column widths
+            String header = String.format("| %-15s | %-20s | %-20s | %-30s | %-20s |", "ID", "First Name", "Last Name", "Email", "Password");
+            writer.write(header);
+            writer.newLine();
+
+            // Adjust the number of dashes to match the header width
+            int dashLength = header.length();
+            writer.write(String.join("", Collections.nCopies(dashLength, "-")));  // Draw underline that matches the header width
+            writer.newLine();
+        }
+
+        // Add user data (appending new users at the end)
+        for (UserData user : usersDataList) {
+            writer.write(user.toString());  // Write user data formatted as per toString method
+            writer.newLine();
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+    
+private static void loadUserData() {
+    usersDataList.clear();  // Clear the existing list before loading new data
+
+    try (BufferedReader reader = new BufferedReader(new FileReader("usersDataList.txt"))) {
+        String line;
+        boolean headerRead = false;
+
+        while ((line = reader.readLine()) != null) {
+            // Skip the header and separator line
+            if (line.contains("| ID")) {
+                headerRead = true;  // Header has been read, skip this line
+                continue;
+            }
+            if (line.contains("-") && headerRead) {
+                continue;  // Skip separator line
+            }
+
+            // Now, parse each line that represents user data
+            String[] parts = line.split("\\|");  // Split based on the pipe symbol "|"
+            if (parts.length == 5) {  // Ensures it's the right format
+                String id = parts[1].trim();
+                String firstName = parts[2].trim();
+                String lastName = parts[3].trim();
+                String email = parts[4].trim();
+                String password = parts[5].trim();
+
+                // Add user data to the list
+                usersDataList.add(new UserData(id, firstName, lastName, email, password));
+            }
+        }
+    } catch (IOException e) {
+        System.out.println("Error loading user data from file.");
+        e.printStackTrace();
+    }
+}*/
+
+
+    
 
     private static void saveUserDataToFile() {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("usersDataList.ser"))) {
@@ -213,9 +295,16 @@ private JPanel createPage2() {
         }
     }
 
-    private boolean isUserExists(String id, String firstName) {
-        return usersDataList.stream().anyMatch(user -> user.getId().equals(id) && user.getpassword().equalsIgnoreCase(firstName));
-    }
+   private boolean isUserExists(String id, String password) {
+    return usersDataList.stream().anyMatch(user -> user.getId().equals(id) && user.getpassword().equals(password));
+}
+   private UserData getUserIfExists(String id, String password) {
+    return usersDataList.stream()
+            .filter(user -> user.getId().equals(id) && user.getpassword().equals(password))
+            .findFirst()
+            .orElse(null);
+}
+
 
     private boolean isValidInput(String id, String firstName, String lastName, String email, String password) {
         if (!id.matches("\\d{7}")) {
@@ -271,6 +360,47 @@ class UserData implements Serializable {
     public String getpassword() {
         return password;
     }
+
+    public String getEmail() {
+        return email;
+    }
+        public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+    
+    @Override
+    public String toString() {
+        return String.format("| %-15s | %-20s | %-20s | %-30s | %-20s |", id, firstName, lastName, email, password);
+    }
+    
+    public class CurrentUserData {
+        private static String firstName;
+        private static String lastName;
+
+        public static void setFirstName(String firstName) {
+            CurrentUserData.firstName = firstName;
+        }
+
+        public static void setLastName(String lastName) {
+            CurrentUserData.lastName = lastName;
+        }
+
+        public static String getFirstName() {
+            return firstName;
+        }
+
+        public static String getLastName() {
+            return lastName;
+        }
+    }
+
+
+
+
 
     // Getters for other fields if needed
 }
