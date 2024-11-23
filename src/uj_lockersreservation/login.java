@@ -1,11 +1,9 @@
-
 package uj_lockersreservation;
 
 import java.awt.*;
 import javax.swing.*;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 import uj_lockersreservation.UserData.CurrentUserData;
@@ -23,7 +21,7 @@ public class login extends JFrame {
 
     public login() {
         setTitle("UJ Lockers Reservation System");
-        setSize(600, 400);
+        setSize(600, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -38,7 +36,8 @@ public class login extends JFrame {
 
         setVisible(true);
     }
-private JPanel createPage1() {
+
+ private JPanel createPage1() {
     JPanel page1Panel = new JPanel(new GridBagLayout());
     page1Panel.setBackground(new Color(245, 245, 245));
 
@@ -91,7 +90,6 @@ private JPanel createPage1() {
 
     return page1Panel;
 }
-
 
 private JPanel createPage2() {
     JPanel page2Panel = new JPanel(new GridBagLayout());
@@ -178,7 +176,9 @@ private JPanel createPage2() {
     // إضافة الحقول مع التسميات
     addField(page3Panel, "ID Number:", idField, gbc, 1);
     addField(page3Panel, "Password:", passwordField, gbc, 2);
-
+   // عرض الاسم الأول والاسم الأخير في صفحة الدخول
+//    String firstName = CurrentUserData.getFirstName();
+//    String lastName = CurrentUserData.getLastName();
     // زر الدخول
     JButton loginButton = new JButton("Login");
     styleButton(loginButton);

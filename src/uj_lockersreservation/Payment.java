@@ -66,10 +66,11 @@ public class Payment extends JFrame {
         payment.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
         panel8.add(payment);
 
-        JButton visa = createIconButton("C:\\Users\\pc\\Desktop\\visa.jpg");
-        JButton mada = createIconButton("C:\\Users\\pc\\Desktop\\Mada.png");
-        JButton tamara = createIconButton("C:\\Users\\VIP\\Downloads\\تنزيل (2).jfif");
-        JButton pay = createIconButton("C:\\Users\\VIP\\Downloads\\تنزيل (1).png");
+           // Payment method buttons
+        JButton visa = createIconButton("C:\\Users\\s4ooo\\Downloads\\UJ_LockersReservation-main\\UJ_LockersReservation-main\\UJ_LockersReservation\\src\\uj_lockersreservation\\visa.jpg");
+        JButton mada = createIconButton("C:\\Users\\s4ooo\\Downloads\\UJ_LockersReservation-main\\UJ_LockersReservation-main\\UJ_LockersReservation\\src\\uj_lockersreservation\\mada.jpg");
+        JButton tamara = createIconButton("C:\\Users\\s4ooo\\Downloads\\UJ_LockersReservation-main\\UJ_LockersReservation-main\\UJ_LockersReservation\\src\\uj_lockersreservation\\tamara.jpg");
+        JButton pay = createIconButton("C:\\Users\\s4ooo\\Downloads\\UJ_LockersReservation-main\\UJ_LockersReservation-main\\UJ_LockersReservation\\src\\uj_lockersreservation\\pay.jpg");
 
         JPanel buttonPanel = new JPanel(new GridLayout(2, 2, 10, 10));
         buttonPanel.add(visa);
@@ -260,12 +261,14 @@ public class Payment extends JFrame {
 
         return button;
     }
-
     private void styleButton(JButton button) {
-        button.setFont(new Font("Arial", Font.PLAIN, 16));
-        button.setPreferredSize(new Dimension(200, 40));
-        button.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+        button.setFont(new Font("Times New Roman", Font.BOLD, 18));
+        button.setBackground(new Color(0, 153, 204));
+        button.setForeground(Color.WHITE);
         button.setFocusPainted(false);
+        button.setBorder(BorderFactory.createEmptyBorder(10, 25, 10, 25));
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        button.setOpaque(true);
     }
 
     private ImageIcon resizeIcon(String path, int width, int height) {

@@ -19,12 +19,12 @@ public class Locker extends JFrame {
 
    public Locker(String currentUserID, String firstName, String lastName) {
        
-     this.currentUserID = currentUserID;
+        this.currentUserID = currentUserID;
         this.firstName = firstName;
         this.lastName = lastName;
         
         setTitle("Locker Reservation");
-        setSize(800, 600);
+        setSize(600, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         lockerStatus = loadLockerStatus(); // تحميل حالة الخزائن من الملف
         page4( currentUserID,firstName,lastName);
@@ -70,6 +70,7 @@ public class Locker extends JFrame {
                 lockerStatus = loadLockerStatus(); // تحميل حالة الخزائن للمبنى المحدد فقط
                 page5(currentUserID, firstName, lastName); // الانتقال إلى صفحة الخزانات
             }
+            
         });
 
         buildingPanel.add(buildingButton);
@@ -152,9 +153,10 @@ public class Locker extends JFrame {
 
     ReservationData reservationData = lockerStatus.get(lockerKey);
     boolean isAvailable = (reservationData == null || reservationData.isAvailable());
+    reservedLockerKey = userHasReservationInBuilding(currentUserID, selectedBuilding);
 
     // تحقق إذا كان المستخدم لديه حجز بالفعل
-    if (userHasReserved.getOrDefault(currentUserID, false)) {
+    if (reservedLockerKey != null) {
         lockerButton.setBackground(new Color(128, 128, 128)); // لون رمادي للخزانات المحجوزة
         lockerButton.setForeground(Color.WHITE);
         lockerButton.setEnabled(false); // تعطيل الزر
@@ -286,8 +288,8 @@ void confirmPayment(String lockerKey,JButton lockerButton,String currentUserID) 
     lockerButton.setBackground(new Color(231, 76, 60));//red
     saveLockerStatus(); // حفظ الحالة في الملف
     JOptionPane.showMessageDialog(this, "Payment successful! Locker reserved.");
-
      userHasReserved.put(currentUserID, true);
+
 }
 void cancelReservation(String lockerKey,JButton lockerButton,String currentUserID) {
     // عند إلغاء الدفع، إعادة حالة اللوكر إلى متاح
