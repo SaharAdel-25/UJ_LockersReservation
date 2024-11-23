@@ -7,17 +7,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 import uj_lockersreservation.UserData.CurrentUserData;
+// Main class for Login System
 
 public class login extends JFrame {
 
-    private CardLayout cardLayout;
-    private JPanel cardPanel;
-    private static List<UserData> usersDataList = new ArrayList<>(); // ArrayList لتخزين بيانات المستخدمين
+      private CardLayout cardLayout; // CardLayout for managing multiple pages
+    private JPanel cardPanel; // Panel to hold pages
+    private static List<UserData> usersDataList = new ArrayList<>(); // List to store user data
 
-    // تحميل البيانات من الملف عند بدء تشغيل البرنامج
+    // Static block to load user data when the program starts
     static {
         loadUserData();
     }
+    // Constructor: Initializes the login interface
 
     public login() {
         setTitle("UJ Lockers Reservation System");
@@ -25,71 +27,68 @@ public class login extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        cardLayout = new CardLayout();
-        cardPanel = new JPanel(cardLayout);
+      cardLayout = new CardLayout(); // Initialize CardLayout
+        cardPanel = new JPanel(cardLayout); // Create panel with CardLayout
 
-        cardPanel.add(createPage1(), "Page 1");
-        cardPanel.add(createPage2(), "Page 2");
-        cardPanel.add(createPage3(), "Page 3");
+        // Add different pages to the card panel
+        cardPanel.add(createPage1(), "Page 1"); // Welcome page
+        cardPanel.add(createPage2(), "Page 2"); // Registration page
+        cardPanel.add(createPage3(), "Page 3"); // Login page
 
-        add(cardPanel);
+        add(cardPanel); // Add card panel to frame
 
-        setVisible(true);
+        setVisible(true); // Make the frame visible
     }
+    // Page 1: Welcome page
 
  private JPanel createPage1() {
     JPanel page1Panel = new JPanel(new GridBagLayout());
     page1Panel.setBackground(new Color(245, 245, 245));
 
     GridBagConstraints gbc = new GridBagConstraints();
-    gbc.insets = new Insets(10, 10, 10, 10);  // ضبط المسافات بين العناصر
+    gbc.insets = new Insets(10, 10, 10, 10); // Add spacing between components
     gbc.fill = GridBagConstraints.HORIZONTAL;
 
-    // إضافة النص "Welcome"
+        // Welcome message
     JLabel welcomeLabel = new JLabel("Welcome to UJ Lockers Reservation System", SwingConstants.CENTER);
     welcomeLabel.setFont(new Font("Times New Roman", Font.BOLD, 24));
     welcomeLabel.setForeground(new Color(0, 102, 204));
     gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 2;
     page1Panel.add(welcomeLabel, gbc);
 
-    // إنشاء لوحة جديدة لإضافة الصورة وتوسيطها
+        // Add logo image
     JPanel imagePanel = new JPanel(new GridBagLayout());
-    imagePanel.setBackground(new Color(245, 245, 245)); // تأكد من نفس اللون الخلفي
     GridBagConstraints imageGbc = new GridBagConstraints();
-    imageGbc.anchor = GridBagConstraints.CENTER; // توسيط الصورة
-    imageGbc.insets = new Insets(10, 10, 10, 10); // المسافات بين العناصر داخل لوحة الصورة
-
-    // إضافة الصورة إلى اللوحة الجديدة
+    imageGbc.anchor = GridBagConstraints.CENTER; 
+    imageGbc.insets = new Insets(10, 10, 10, 10);  // Add spacing between components
     JLabel imageLabel = new JLabel();
     ImageIcon icon = new ImageIcon("C:\\Users\\s4ooo\\Downloads\\UJ_LockersReservation-main\\UJ_LockersReservation-main\\UJ_LockersReservation\\src\\uj_lockersreservation\\UJ.png");
-    Image img = icon.getImage().getScaledInstance(150, 120, Image.SCALE_SMOOTH);  // تصغير الحجم للصورة
+    Image img = icon.getImage().getScaledInstance(150, 120, Image.SCALE_SMOOTH);  
     icon = new ImageIcon(img);
     imageLabel.setIcon(icon);
+    imagePanel.add(imageLabel, imageGbc);
+    gbc.gridx = 0;  
+    gbc.gridy++;  
+    gbc.gridwidth = 2;  
+    page1Panel.add(imagePanel, gbc);  
 
-    imagePanel.add(imageLabel, imageGbc); // إضافة الصورة إلى اللوحة الجديدة
-
-    // إضافة لوحة الصورة إلى اللوحة الرئيسية
-    gbc.gridx = 0;  // بداية العمود الأول
-    gbc.gridy++;  // الانتقال إلى الصف التالي
-    gbc.gridwidth = 2;  // الصورة تمتد عبر عمودين
-    page1Panel.add(imagePanel, gbc);  // إضافة لوحة الصورة
-
-    // إضافة زر "Log in"
+        // Login button
     JButton loginButton = new JButton("Log in");
     styleButton(loginButton);
-    gbc.gridy++;  // الانتقال إلى الصف التالي
+    gbc.gridy++;  
     loginButton.addActionListener(e -> cardLayout.show(cardPanel, "Page 3"));
     page1Panel.add(loginButton, gbc);
 
-    // إضافة زر "Register"
+        // Register button
     JButton registerButton = new JButton("Register");
     styleButton(registerButton);
-    gbc.gridy++;  // الانتقال إلى الصف التالي
+    gbc.gridy++;  
     registerButton.addActionListener(e -> cardLayout.show(cardPanel, "Page 2"));
     page1Panel.add(registerButton, gbc);
 
     return page1Panel;
 }
+    // Page 2: Registration page
 
 private JPanel createPage2() {
     JPanel page2Panel = new JPanel(new GridBagLayout());
@@ -119,10 +118,11 @@ private JPanel createPage2() {
     addField(page2Panel, "Password:", passwordField, gbc, 5);
     
 
+        // Register button
 
     JButton signUpSubmitButton = new JButton("Register");
     styleButton(signUpSubmitButton);
-    signUpSubmitButton.setPreferredSize(new Dimension(300, 40)); // تحديد الحجم هنا
+    signUpSubmitButton.setPreferredSize(new Dimension(300, 40)); 
     gbc.gridx = 0;
     gbc.gridy++;
     gbc.gridwidth = 2;
@@ -136,13 +136,13 @@ private JPanel createPage2() {
         if (isValidInput(id, firstName, lastName, email, password)) {
             saveData(new UserData(id, firstName, lastName, email, password));
             JOptionPane.showMessageDialog(this, "Account created successfully!");
-                        // حفظ الأسماء في CurrentUserData
             CurrentUserData.setFirstName(firstName);
             CurrentUserData.setLastName(lastName);
             cardLayout.show(cardPanel, "Page 3");
 }
     });
     page2Panel.add(signUpSubmitButton, gbc);
+        // Back button
 
     JButton backButton = new JButton("Back");
     styleButton(backButton);
@@ -153,6 +153,7 @@ private JPanel createPage2() {
     return page2Panel;
 }
 
+    // Page 3: Login page
 
     public JPanel createPage3() {
     JPanel page3Panel = new JPanel(new GridBagLayout());
@@ -160,43 +161,36 @@ private JPanel createPage2() {
 
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.insets = new Insets(10, 10, 10, 10);
-    gbc.fill = GridBagConstraints.HORIZONTAL;  // إضافة هذه لضبط أبعاد المكونات
+    gbc.fill = GridBagConstraints.HORIZONTAL;  
 
-    // إضافة عنوان الدخول
     JLabel loginLabel = new JLabel("Log in", SwingConstants.CENTER);
     loginLabel.setFont(new Font("Times New Roman", Font.BOLD, 24));
     loginLabel.setForeground(new Color(0, 102, 204));
     gbc.gridwidth = 2; gbc.gridx = 0; gbc.gridy = 0;
     page3Panel.add(loginLabel, gbc);
 
-    // حقول النص مع ضبط الأبعاد
     JTextField idField = new JTextField(15);
     JPasswordField passwordField = new JPasswordField(15);
 
-    // إضافة الحقول مع التسميات
     addField(page3Panel, "ID Number:", idField, gbc, 1);
     addField(page3Panel, "Password:", passwordField, gbc, 2);
-   // عرض الاسم الأول والاسم الأخير في صفحة الدخول
-//    String firstName = CurrentUserData.getFirstName();
-//    String lastName = CurrentUserData.getLastName();
-    // زر الدخول
+
     JButton loginButton = new JButton("Login");
     styleButton(loginButton);
-    gbc.gridwidth = 2;  // تأكيد أن الزر يمتد عبر العمودين
-    gbc.gridx = 0;  // ضبط الزر في عمود 0
-    gbc.gridy++;  // الانتقال للصف التالي
-    loginButton.setPreferredSize(new Dimension(300, 40)); // تحديد حجم الزر
+    gbc.gridwidth = 2;  
+    gbc.gridx = 0;  
+    gbc.gridy++;  
+    loginButton.setPreferredSize(new Dimension(300, 40)); 
     loginButton.addActionListener(e -> {
     String userId = idField.getText();
     String password = new String(passwordField.getPassword());
     UserData loggedInUser = getUserIfExists(userId, password);
 
     if (loggedInUser != null) {
-        // تعيين البيانات للمستخدم الحالي
         CurrentUserData.setFirstName(loggedInUser.getFirstName());
         CurrentUserData.setLastName(loggedInUser.getLastName());
 
-        // فتح واجهة اللوكر
+        
         dispose();
         Locker lockerFrame = new Locker(userId, loggedInUser.getFirstName(), loggedInUser.getLastName());
         lockerFrame.setSize(600, 500);
@@ -211,16 +205,17 @@ private JPanel createPage2() {
 
     page3Panel.add(loginButton, gbc);
 
-    // زر التسجيل
+    
     JButton registerButton = new JButton("Register");
     styleButton(registerButton);
-    gbc.gridy++;  // الانتقال للصف التالي
-    registerButton.setPreferredSize(new Dimension(300, 40)); // تحديد حجم الزر
+    gbc.gridy++;  
+    registerButton.setPreferredSize(new Dimension(300, 40)); 
     registerButton.addActionListener(e -> cardLayout.show(cardPanel, "Page 2"));
     page3Panel.add(registerButton, gbc);
 
     return page3Panel;
 }
+    // Styles a button with consistent UI properties
 
     private void styleButton(JButton button) {
         button.setFont(new Font("Times New Roman", Font.BOLD, 18));
@@ -231,11 +226,13 @@ private JPanel createPage2() {
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
         button.setOpaque(true);
     }
+    // Saves a user data instance to the file
 
     public void saveData(UserData userData) {
         usersDataList.add(userData);
         saveUserDataToFile();
     }
+    // Saves user data to a file
 
     private static void saveUserDataToFile() {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("usersDataList.ser"))) {
@@ -244,6 +241,7 @@ private JPanel createPage2() {
             e.printStackTrace();
         }
     }
+    // Loads user data from a file
 
     private static void loadUserData() {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("usersDataList.ser"))) {
@@ -252,10 +250,8 @@ private JPanel createPage2() {
             System.out.println("No previous data found. Starting fresh.");
         }
     }
+    // Checks if the user exists
 
-   private boolean isUserExists(String id, String password) {
-    return usersDataList.stream().anyMatch(user -> user.getId().equals(id) && user.getpassword().equals(password));
-}
    private UserData getUserIfExists(String id, String password) {
     return usersDataList.stream()
             .filter(user -> user.getId().equals(id) && user.getpassword().equals(password))
@@ -263,6 +259,7 @@ private JPanel createPage2() {
             .orElse(null);
 }
 
+    // Validates user input
 
     private boolean isValidInput(String id, String firstName, String lastName, String email, String password) {
         if (!id.matches("\\d{7}")) {
@@ -281,16 +278,18 @@ private JPanel createPage2() {
             JOptionPane.showMessageDialog(this, "Password must be at least 6 characters long.");
             return false;
         }
-           if (isIdExists(id)) { // تحقق إذا كان الـ ID موجود مسبقًا
+           if (isIdExists(id)) { 
             JOptionPane.showMessageDialog(this, "This ID is already taken. Please use a different ID.");
             return false;
         }
         return true;
     }
-    // دالة للتحقق من وجود ID مسبقًا
+    // Checks if the ID already exists
     private boolean isIdExists(String id) {
         return usersDataList.stream().anyMatch(user -> user.getId().equals(id));
     }
+        // Adds a labeled field to the panel
+
     private void addField(JPanel panel, String label, JTextField field, GridBagConstraints gbc, int y) {
         gbc.gridx = 0; gbc.gridy = y; gbc.gridwidth = 1;
         JLabel jLabel = new JLabel(label);
@@ -302,7 +301,7 @@ private JPanel createPage2() {
     }
 }
 
-// UserData class for serialization
+// UserData class: Represents user information and supports serialization
 class UserData implements Serializable {
     private String id;
     private String firstName;
@@ -341,7 +340,8 @@ class UserData implements Serializable {
     public String toString() {
         return String.format("| %-15s | %-20s | %-20s | %-30s | %-20s |", id, firstName, lastName, email, password);
     }
-    
+        // Inner class to store current user's data
+
     public class CurrentUserData {
         private static String firstName;
         private static String lastName;

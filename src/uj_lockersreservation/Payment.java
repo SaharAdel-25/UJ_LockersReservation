@@ -8,18 +8,18 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.time.LocalDate;
+// Payment class: Handles payment process and receipt generation
 
 public class Payment extends JFrame {
 
-    private JTextField amount;
-    private JButton lastSelectedButton = null;
-    private String selectedMethod = "";
-    private String currentUserID;
-    private String lockerKey;
-    private String firstName;
-    private String lastName;
-    JButton lockerButton;
-    private boolean isPaymentCompleted = false; // Flag to check if payment is completed
+    private JTextField amount; // Field for entering the amount
+    private String selectedMethod = ""; // Selected payment method
+    private String currentUserID; // Current user's ID
+    private String lockerKey; // Locker key
+    private String firstName; // User's first name
+    private String lastName; // User's last name
+    public JButton lockerButton; // Button representing the locker
+    private boolean isPaymentCompleted = false; // Flag to indicate payment status
 
     // Constructor to initialize with user data
     public Payment(String currentUserID, String lockerKey, JButton lockerButton, String firstName, String lastName) {
@@ -29,8 +29,9 @@ public class Payment extends JFrame {
         this.firstName = firstName;
         this.lastName = lastName;
 
-       page6();
+       page6();// Load the payment interface
     }
+    // page6: Builds the payment interface with options for semesters and payment methods
 
     public void page6() {
         JPanel panel0 = new JPanel();
@@ -42,6 +43,7 @@ public class Payment extends JFrame {
         JPanel panel8 = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JPanel panel15 = new JPanel();
         panel15.setLayout(new BoxLayout(panel15, BoxLayout.Y_AXIS));
+        // Semester buttons
 
         JButton semester1Button = new JButton("Semester 1");
         JButton semester2Button = new JButton("Semester 2");
@@ -52,6 +54,7 @@ public class Payment extends JFrame {
 
         semester1Button.addActionListener(e -> amount.setText("40"));
         semester2Button.addActionListener(e -> amount.setText("80"));
+        // Amount field
 
         JLabel rs = new JLabel("RS");
         rs.setFont(new Font("Times New Roman", Font.BOLD, 16));
@@ -60,6 +63,7 @@ public class Payment extends JFrame {
         panel7.add(rs);
         panel7.add(amount);
         panel6.add(panel7);
+        // Payment options
 
         JLabel payment = new JLabel("Payment");
         payment.setFont(new Font("Times New Roman", Font.BOLD, 18));
@@ -80,6 +84,7 @@ public class Payment extends JFrame {
 
         panel15.add(panel8);
         panel15.add(buttonPanel);
+        // Cash on Delivery and Cancel buttons
 
         JPanel panel5 = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton cashOnDeliveryButton = new JButton("Cash on Delivery");
@@ -97,6 +102,7 @@ public class Payment extends JFrame {
         panel0.add(panel5);
 
         add(panel0, BorderLayout.CENTER);
+        // Payment method actions
 
         visa.addActionListener(e -> {
             selectedMethod = "Visa";
@@ -114,11 +120,13 @@ public class Payment extends JFrame {
             selectedMethod = "Pay";
             confirmAndShowReceipt(firstName,  lastName);
         });
+        // Cash on Delivery action
 
         cashOnDeliveryButton.addActionListener(e -> {
             selectedMethod = "Cash on Delivery";
             showCashOnDeliveryMessage(firstName,  lastName);
         });
+        // Cancel button action
 
         backButton.addActionListener(e -> {
             if (!isPaymentCompleted) {
@@ -129,11 +137,13 @@ public class Payment extends JFrame {
             }
         });
     }
+    // cancelReservation: Cancels the locker reservation if payment is not completed
 
     private void cancelReservation() {
         Locker a = new Locker(currentUserID,  firstName,  lastName);
         a.cancelReservation(lockerKey, lockerButton, currentUserID);
     }
+    // confirmAndShowReceipt: Confirms payment and generates a receipt
 
    private void confirmAndShowReceipt(String firstName,String  lastName) {
         Locker a = new Locker(currentUserID,  firstName,  lastName);
@@ -153,6 +163,7 @@ public class Payment extends JFrame {
             a.confirmPayment(lockerKey, lockerButton, currentUserID);
         }
     }
+    // showCashOnDeliveryMessage: Displays instructions for Cash on Delivery method
 
     private void showCashOnDeliveryMessage(String firstName,String  lastName) {
         Locker a = new Locker(currentUserID,  firstName,  lastName);
@@ -164,6 +175,7 @@ public class Payment extends JFrame {
         a.confirmPayment(lockerKey, lockerButton, currentUserID);
         showReceipt("Cash on Delivery", amount.getText(),firstName,  lastName);
     }
+    // showReceipt: Displays a payment receipt with a QR code
 
   private void showReceipt(String method, String amount, String firstName, String lastName) {
     // إنشاء النص الخاص بالفاتورة
@@ -219,6 +231,7 @@ public class Payment extends JFrame {
     }
 }
 
+    // generateBarcode: Generates a QR code image from data
 
     private ImageIcon generateBarcode(String data) {
         try {
@@ -243,6 +256,7 @@ public class Payment extends JFrame {
             return null;
         }
     }
+    // createIconButton: Creates a styled button with an icon
 
     private JButton createIconButton(String iconPath) {
         JButton button = new JButton(resizeIcon(iconPath, 50, 50));
@@ -261,6 +275,8 @@ public class Payment extends JFrame {
 
         return button;
     }
+       // Style a JButton with a specific font, colors, and hover effect
+
     private void styleButton(JButton button) {
         button.setFont(new Font("Times New Roman", Font.BOLD, 18));
         button.setBackground(new Color(0, 153, 204));
@@ -270,6 +286,7 @@ public class Payment extends JFrame {
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
         button.setOpaque(true);
     }
+    // resizeIcon: Resizes an icon image for consistent button display
 
     private ImageIcon resizeIcon(String path, int width, int height) {
         ImageIcon icon = new ImageIcon(path);
