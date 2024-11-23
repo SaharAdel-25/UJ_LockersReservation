@@ -38,35 +38,61 @@ public class login extends JFrame {
 
         setVisible(true);
     }
+private JPanel createPage1() {
+    JPanel page1Panel = new JPanel(new GridBagLayout());
+    page1Panel.setBackground(new Color(245, 245, 245));
 
-    private JPanel createPage1() {
-        JPanel page1Panel = new JPanel(new GridBagLayout());
-        page1Panel.setBackground(new Color(245, 245, 245));
+    GridBagConstraints gbc = new GridBagConstraints();
+    gbc.insets = new Insets(10, 10, 10, 10);  // ضبط المسافات بين العناصر
+    gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
+    // إضافة النص "Welcome"
+    JLabel welcomeLabel = new JLabel("Welcome to UJ Lockers Reservation System", SwingConstants.CENTER);
+    welcomeLabel.setFont(new Font("Times New Roman", Font.BOLD, 24));
+    welcomeLabel.setForeground(new Color(0, 102, 204));
+    gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 2;
+    page1Panel.add(welcomeLabel, gbc);
 
-        JLabel welcomeLabel = new JLabel("Welcome to UJ Lockers Reservation System", SwingConstants.CENTER);
-        welcomeLabel.setFont(new Font("Times New Roman", Font.BOLD, 24));
-        welcomeLabel.setForeground(new Color(0, 102, 204));
-        gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 2;
-        page1Panel.add(welcomeLabel, gbc);
+    // إنشاء لوحة جديدة لإضافة الصورة وتوسيطها
+    JPanel imagePanel = new JPanel(new GridBagLayout());
+    imagePanel.setBackground(new Color(245, 245, 245)); // تأكد من نفس اللون الخلفي
+    GridBagConstraints imageGbc = new GridBagConstraints();
+    imageGbc.anchor = GridBagConstraints.CENTER; // توسيط الصورة
+    imageGbc.insets = new Insets(10, 10, 10, 10); // المسافات بين العناصر داخل لوحة الصورة
 
-        JButton loginButton = new JButton("Log in");
-        styleButton(loginButton);
-        gbc.gridy++;
-        loginButton.addActionListener(e -> cardLayout.show(cardPanel, "Page 3"));
-        page1Panel.add(loginButton, gbc);
+    // إضافة الصورة إلى اللوحة الجديدة
+    JLabel imageLabel = new JLabel();
+    ImageIcon icon = new ImageIcon("C:\\Users\\s4ooo\\Downloads\\UJ_LockersReservation-main\\UJ_LockersReservation-main\\UJ_LockersReservation\\src\\uj_lockersreservation\\UJ.png");
+    Image img = icon.getImage().getScaledInstance(150, 120, Image.SCALE_SMOOTH);  // تصغير الحجم للصورة
+    icon = new ImageIcon(img);
+    imageLabel.setIcon(icon);
 
-        JButton registerButton = new JButton("Register");
-        styleButton(registerButton);
-        gbc.gridy++;
-        registerButton.addActionListener(e -> cardLayout.show(cardPanel, "Page 2"));
-        page1Panel.add(registerButton, gbc);
+    imagePanel.add(imageLabel, imageGbc); // إضافة الصورة إلى اللوحة الجديدة
 
-        return page1Panel;
-    }
+    // إضافة لوحة الصورة إلى اللوحة الرئيسية
+    gbc.gridx = 0;  // بداية العمود الأول
+    gbc.gridy++;  // الانتقال إلى الصف التالي
+    gbc.gridwidth = 2;  // الصورة تمتد عبر عمودين
+    page1Panel.add(imagePanel, gbc);  // إضافة لوحة الصورة
+
+    // إضافة زر "Log in"
+    JButton loginButton = new JButton("Log in");
+    styleButton(loginButton);
+    gbc.gridy++;  // الانتقال إلى الصف التالي
+    loginButton.addActionListener(e -> cardLayout.show(cardPanel, "Page 3"));
+    page1Panel.add(loginButton, gbc);
+
+    // إضافة زر "Register"
+    JButton registerButton = new JButton("Register");
+    styleButton(registerButton);
+    gbc.gridy++;  // الانتقال إلى الصف التالي
+    registerButton.addActionListener(e -> cardLayout.show(cardPanel, "Page 2"));
+    page1Panel.add(registerButton, gbc);
+
+    return page1Panel;
+}
+
+
 private JPanel createPage2() {
     JPanel page2Panel = new JPanel(new GridBagLayout());
     page2Panel.setBackground(new Color(245, 245, 245));
@@ -152,9 +178,7 @@ private JPanel createPage2() {
     // إضافة الحقول مع التسميات
     addField(page3Panel, "ID Number:", idField, gbc, 1);
     addField(page3Panel, "Password:", passwordField, gbc, 2);
-   // عرض الاسم الأول والاسم الأخير في صفحة الدخول
-//    String firstName = CurrentUserData.getFirstName();
-//    String lastName = CurrentUserData.getLastName();
+
     // زر الدخول
     JButton loginButton = new JButton("Login");
     styleButton(loginButton);
@@ -212,72 +236,6 @@ private JPanel createPage2() {
         usersDataList.add(userData);
         saveUserDataToFile();
     }
-    
-    /*
-    
-    private static void saveUserDataToFile() {
-    try (BufferedWriter writer = new BufferedWriter(new FileWriter("usersDataList.txt", true))) {  // Open in append mode
-        // If the file is empty, write the header
-        if (new File("usersDataList.txt").length() == 0) {
-            // Header formatting with column widths
-            String header = String.format("| %-15s | %-20s | %-20s | %-30s | %-20s |", "ID", "First Name", "Last Name", "Email", "Password");
-            writer.write(header);
-            writer.newLine();
-
-            // Adjust the number of dashes to match the header width
-            int dashLength = header.length();
-            writer.write(String.join("", Collections.nCopies(dashLength, "-")));  // Draw underline that matches the header width
-            writer.newLine();
-        }
-
-        // Add user data (appending new users at the end)
-        for (UserData user : usersDataList) {
-            writer.write(user.toString());  // Write user data formatted as per toString method
-            writer.newLine();
-        }
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
-}
-    
-private static void loadUserData() {
-    usersDataList.clear();  // Clear the existing list before loading new data
-
-    try (BufferedReader reader = new BufferedReader(new FileReader("usersDataList.txt"))) {
-        String line;
-        boolean headerRead = false;
-
-        while ((line = reader.readLine()) != null) {
-            // Skip the header and separator line
-            if (line.contains("| ID")) {
-                headerRead = true;  // Header has been read, skip this line
-                continue;
-            }
-            if (line.contains("-") && headerRead) {
-                continue;  // Skip separator line
-            }
-
-            // Now, parse each line that represents user data
-            String[] parts = line.split("\\|");  // Split based on the pipe symbol "|"
-            if (parts.length == 5) {  // Ensures it's the right format
-                String id = parts[1].trim();
-                String firstName = parts[2].trim();
-                String lastName = parts[3].trim();
-                String email = parts[4].trim();
-                String password = parts[5].trim();
-
-                // Add user data to the list
-                usersDataList.add(new UserData(id, firstName, lastName, email, password));
-            }
-        }
-    } catch (IOException e) {
-        System.out.println("Error loading user data from file.");
-        e.printStackTrace();
-    }
-}*/
-
-
-    
 
     private static void saveUserDataToFile() {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("usersDataList.ser"))) {
@@ -405,9 +363,4 @@ class UserData implements Serializable {
         }
     }
 
-
-
-
-
-    // Getters for other fields if needed
 }

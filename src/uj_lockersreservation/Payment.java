@@ -136,12 +136,7 @@ public class Payment extends JFrame {
 
    private void confirmAndShowReceipt(String firstName,String  lastName) {
         Locker a = new Locker(currentUserID,  firstName,  lastName);
-//                Locker a = new Locker(currentUserID,firstName, lastName);
 
-        
-//          if (amount.getText().isEmpty() || (!amount.getText().equals("40") && !amount.getText().equals("80"))) {
-//        amount.setText("40"); // تعيين القيمة الافتراضية
-//    }
    // التحقق مما إذا لم يتم تحديد فصل دراسي
     if (amount.getText().isEmpty() || (!amount.getText().equals("40") && !amount.getText().equals("80"))) {
         JOptionPane.showMessageDialog(this, "Please select a semester before proceeding.", "Selection Required", JOptionPane.WARNING_MESSAGE);
@@ -169,49 +164,60 @@ public class Payment extends JFrame {
         showReceipt("Cash on Delivery", amount.getText(),firstName,  lastName);
     }
 
-    private void showReceipt(String method, String amount,String firstName, String lastName) {
-        // إنشاء النص الخاص بالفاتورة
-        
-        StringBuilder receipt = new StringBuilder();
-        receipt.append("Payment Receipt\n");
-        receipt.append("Date: ").append(LocalDate.now()).append("\n");
-        receipt.append("User ID: ").append(currentUserID).append("\n");
-        receipt.append("Name: ").append(firstName).append(" ").append(lastName).append("\n");
-        receipt.append("Locker key: ").append(lockerKey).append("\n");
-        receipt.append("Method: ").append(method).append("\n");
-        receipt.append("Amount: ").append(amount).append(" RS");
+  private void showReceipt(String method, String amount, String firstName, String lastName) {
+    // إنشاء النص الخاص بالفاتورة
+    StringBuilder receipt = new StringBuilder();
+    receipt.append("Payment Receipt\n");
+    receipt.append("Date: ").append(LocalDate.now()).append("\n");
+    receipt.append("User ID: ").append(currentUserID).append("\n");
+    receipt.append("Name: ").append(firstName).append(" ").append(lastName).append("\n");
+    receipt.append("Locker key: ").append(lockerKey).append("\n");
+    receipt.append("Method: ").append(method).append("\n");
+    receipt.append("Amount: ").append(amount).append(" RS");
 
-        // إنشاء بيانات الباركود
-        String barcodeData = "UserID:" + currentUserID + "||LockerKey:" + lockerKey;
+    // إنشاء بيانات الباركود
+    String barcodeData = "UserID:" + currentUserID + "||LockerKey:" + lockerKey;
 
-        // إنشاء صورة الباركود
-        ImageIcon barcodeIcon = generateBarcode(barcodeData);
+    // إنشاء صورة الباركود
+    ImageIcon barcodeIcon = generateBarcode(barcodeData);
 
-        // واجهة الفاتورة
-        JTextArea receiptArea = new JTextArea(receipt.toString());
-        receiptArea.setEditable(false);
-        receiptArea.setFont(new Font("Times New Roman", Font.PLAIN, 14));
+    // واجهة الفاتورة
+    JTextArea receiptArea = new JTextArea(receipt.toString());
+    receiptArea.setEditable(false);
+    receiptArea.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 
-        // إنشاء لوحة تحتوي على النص والباركود
-        JPanel receiptPanel = new JPanel();
-        receiptPanel.setLayout(new BoxLayout(receiptPanel, BoxLayout.Y_AXIS));
-        receiptPanel.add(receiptArea); // إضافة النص
+    JPanel receiptPanel = new JPanel();
+    receiptPanel.setLayout(new BoxLayout(receiptPanel, BoxLayout.Y_AXIS));
+    receiptPanel.add(receiptArea);
 
-        if (barcodeIcon != null) {
-            JLabel barcodeLabel = new JLabel(barcodeIcon);
-            barcodeLabel.setAlignmentX(Component.CENTER_ALIGNMENT); // مركز الصورة في منتصف اللوحة
-            receiptPanel.add(barcodeLabel); // إضافة الباركود
-        }
-
-        // عرض الفاتورة في نافذة منبثقة
-        JOptionPane.showMessageDialog(this, receiptPanel, "Receipt", JOptionPane.INFORMATION_MESSAGE);
-
-        // الانتقال إلى الصفحة التالية
-        Locker a = new Locker(currentUserID,  firstName,  lastName);
-        a.page4( currentUserID,firstName,lastName);
-
-        dispose();
+    if (barcodeIcon != null) {
+        JLabel barcodeLabel = new JLabel(barcodeIcon);
+        barcodeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        receiptPanel.add(barcodeLabel);
     }
+
+    // عرض الفاتورة في نافذة منبثقة مع زر OK
+    int result = JOptionPane.showConfirmDialog(
+        this,
+        receiptPanel,
+        "Receipt",
+        JOptionPane.DEFAULT_OPTION,
+        JOptionPane.INFORMATION_MESSAGE
+    );
+
+    // تحقق من الضغط على "OK" للانتقال إلى صفحة المباني
+    if (result == JOptionPane.OK_OPTION || result == JOptionPane.CLOSED_OPTION) {
+        // الانتقال إلى صفحة المباني
+        Locker lockerPage = new Locker(currentUserID, firstName, lastName);
+        lockerPage.page4(currentUserID, firstName, lastName); // عرض صفحة المباني
+        lockerPage.setSize(600, 500);
+        lockerPage.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        lockerPage.setLocationRelativeTo(null);
+        lockerPage.setVisible(true);
+        dispose(); // إغلاق نافذة الدفع
+    }
+}
+
 
     private ImageIcon generateBarcode(String data) {
         try {

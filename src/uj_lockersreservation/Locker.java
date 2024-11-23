@@ -15,6 +15,7 @@ public class Locker extends JFrame {
     String firstName ; 
     String lastName ;
     private Map<String, ReservationData> lockerStatus; // حالة كل خزانة (محجوزة أو متاحة)
+    private Map<String, Boolean> userHasReserved = new HashMap<>(); // تتبع حالة الحجز لكل مستخدم
 
    public Locker(String currentUserID, String firstName, String lastName) {
        
@@ -31,67 +32,69 @@ public class Locker extends JFrame {
     }
     
   
-    public void page4(String currentUserID, String firstName, String lastName) {
-        
-        getContentPane().removeAll();
-        setLayout(new BorderLayout(10, 10));
+   public void page4(String currentUserID, String firstName, String lastName) {
+    getContentPane().removeAll(); // إزالة أي محتوى سابق
+    setLayout(new BorderLayout(10, 10));
 
-        JLabel questionLabel = new JLabel("Which building do you want?", SwingConstants.CENTER);
-        questionLabel.setFont(new Font("Times New Roman", Font.BOLD, 24));
-        questionLabel.setForeground(new Color(0, 102, 204));
-        add(questionLabel, BorderLayout.NORTH);
+    JLabel questionLabel = new JLabel("Which building do you want?", SwingConstants.CENTER);
+    questionLabel.setFont(new Font("Times New Roman", Font.BOLD, 24));
+    questionLabel.setForeground(new Color(0, 102, 204));
+    add(questionLabel, BorderLayout.NORTH);
 
-        JPanel buildingPanel = new JPanel();
-        buildingPanel.setLayout(new GridLayout(0, 2, 15, 15));
-        buildingPanel.setBackground(new Color(245, 245, 245));
+    JPanel buildingPanel = new JPanel();
+    buildingPanel.setLayout(new GridLayout(0, 2, 15, 15));
+    buildingPanel.setBackground(new Color(245, 245, 245));
 
-        String[] buildingNumbers = {
-            "Building 11", "Building 17", "Building 5", "Building 12",
-            "Building 3", "Building 14", "Building 6", "Building 7",
-            "Building 8", "Building 15", "Building 2", "Building 9",
-            "Building 10", "Building 4", "Building 18", "Building 20"
-        };
-  
+    String[] buildingNumbers = {
+        "Building 11", "Building 17", "Building 5", "Building 12",
+        "Building 3", "Building 14", "Building 6", "Building 7",
+        "Building 8", "Building 15", "Building 2", "Building 9",
+        "Building 10", "Building 4", "Building 18", "Building 20"
+    };
 
-        for (String building : buildingNumbers) {
-            JButton buildingButton = new JButton(building);
-            buildingButton.setFont(new Font("Arial", Font.BOLD, 16));
-            buildingButton.setBackground(new Color(220, 220, 220));
-            buildingButton.setForeground(new Color(50, 50, 50));
+    for (String building : buildingNumbers) {
+        JButton buildingButton = new JButton(building);
+        buildingButton.setFont(new Font("Arial", Font.BOLD, 16));
+        buildingButton.setBackground(new Color(220, 220, 220));
+        buildingButton.setForeground(new Color(50, 50, 50));
 
-            buildingButton.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    selectedBuilding = building;
-                    lockerStatus = loadLockerStatus(); // تحميل حالة الخزائن للمبنى المحدد فقط
-                    page5(currentUserID, firstName,lastName);
- 
+        buildingButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // التحقق من حالة الحجز
+                if (userHasReserved.getOrDefault(currentUserID, false)) {
+                    JOptionPane.showMessageDialog(null, "You have already reserved a locker and cannot reserve another.");
+                    return; // منع الانتقال إلى صفحة الخزانات
                 }
-            });
 
-            buildingPanel.add(buildingButton);
-        }
-
-        JScrollPane scrollPane = new JScrollPane(buildingPanel);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        add(scrollPane, BorderLayout.CENTER);
-
-      
-        // زر العودة إلى صفحة تسجيل الدخول
-        JButton backButton = new JButton("Back to Login");
-        styleButton(backButton); // تطبيق التنسيق على الزر
-        backButton.addActionListener(e -> {
-            // العودة إلى صفحة تسجيل الدخول
-            getContentPane().removeAll();
-            login loginPage = new login();
-            dispose(); // إغلاق الـ JFrame الحالي
-            revalidate();
-            repaint();
+                selectedBuilding = building;
+                lockerStatus = loadLockerStatus(); // تحميل حالة الخزائن للمبنى المحدد فقط
+                page5(currentUserID, firstName, lastName); // الانتقال إلى صفحة الخزانات
+            }
         });
-        add(backButton, BorderLayout.SOUTH); // إضافة الزر في أسفل الصفحة
 
+        buildingPanel.add(buildingButton);
+    }
+
+    JScrollPane scrollPane = new JScrollPane(buildingPanel);
+    scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+    add(scrollPane, BorderLayout.CENTER);
+
+    // زر العودة إلى صفحة تسجيل الدخول
+    JButton backButton = new JButton("Back to Login");
+    styleButton(backButton); // تطبيق التنسيق على الزر
+    backButton.addActionListener(e -> {
+        // العودة إلى صفحة تسجيل الدخول
+        getContentPane().removeAll();
+        login loginPage = new login();
+        dispose(); // إغلاق الـ JFrame الحالي
         revalidate();
         repaint();
-    }
+    });
+    add(backButton, BorderLayout.SOUTH); // إضافة الزر في أسفل الصفحة
+
+    revalidate();
+    repaint(); // إعادة رسم الصفحة
+}
 
 
     public void page5(String currentUserID,String firstName,String lastName) {
@@ -150,21 +153,21 @@ public class Locker extends JFrame {
     ReservationData reservationData = lockerStatus.get(lockerKey);
     boolean isAvailable = (reservationData == null || reservationData.isAvailable());
 
-    // تحقق إذا كان المستخدم لديه حجز في هذا المبنى
-    if (reservedLockerKey != null) {
+    // تحقق إذا كان المستخدم لديه حجز بالفعل
+    if (userHasReserved.getOrDefault(currentUserID, false)) {
         lockerButton.setBackground(new Color(128, 128, 128)); // لون رمادي للخزانات المحجوزة
         lockerButton.setForeground(Color.WHITE);
         lockerButton.setEnabled(false); // تعطيل الزر
     } else if (isAvailable) {
-        lockerButton.setBackground(new Color(46, 204, 113));//اخضر
+        lockerButton.setBackground(new Color(46, 204, 113)); // لون أخضر للخزانات المتاحة
         lockerButton.setForeground(Color.WHITE);
-        lockerButton.addActionListener(e -> reserveLocker(lockerKey, lockerButton, currentUserID,firstName, lastName));
-     
+        lockerButton.addActionListener(e -> reserveLocker(lockerKey, lockerButton, currentUserID, firstName, lastName));
     } else {
-        lockerButton.setBackground(new Color(231, 76, 60));//red
+        lockerButton.setBackground(new Color(231, 76, 60)); // لون أحمر للخزانات المحجوزة
         lockerButton.setForeground(Color.WHITE);
-        lockerButton.setEnabled(false); // تعطيل الزر إذا كانت محجوزة
+        lockerButton.setEnabled(false); // تعطيل الزر
     }
+
 
     lockerPanel.add(lockerButton);
 }
@@ -179,9 +182,14 @@ public class Locker extends JFrame {
 }
 
     // Method to reserve a locker
-private void reserveLocker(String lockerKey, JButton lockerButton, String currentUserID,String firstName,String lastName) {
+private void reserveLocker(String lockerKey, JButton lockerButton, String currentUserID, String firstName, String lastName) {
+  
+    if (userHasReserved.getOrDefault(currentUserID, false)) {
+        JOptionPane.showMessageDialog(null, "You have already reserved a locker and cannot reserve another.");
+        return; // منع عملية الحجز
+    }
     String building = lockerKey.split(":")[0]; // استخراج رقم المبنى من المفتاح
-
+  
     // تحقق مما إذا كان المستخدم لديه أكثر من لوكر محجوز في مباني مختلفة
     int reservedCount = countReservedLockersInDifferentBuildings(currentUserID);
     if (reservedCount >= 2) {
@@ -196,20 +204,15 @@ private void reserveLocker(String lockerKey, JButton lockerButton, String curren
         return;
     }
 
-//    // إذا لم يكن لدى المستخدم حجز في نفس المبنى، استمر في حجز اللوكر
-//    lockerButton.setBackground(new Color(231, 76, 60));
-//    lockerStatus.put(lockerKey, new ReservationData(false, currentUserID)); // تعيين حالة الخزانة كمحجوزة مع معرف المستخدم
-//    saveLockerStatus(); // حفظ الحالة في الملف
-
-    // فتح نافذة الدفع
-    Payment paymentPage = new Payment(currentUserID, lockerKey, lockerButton,firstName, lastName);
-
-    paymentPage.page6();
+    // افتح نافذة الدفع فقط
+    Payment paymentPage = new Payment(currentUserID, lockerKey, lockerButton, firstName, lastName);
     paymentPage.setSize(600, 500);
     paymentPage.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     paymentPage.setLocationRelativeTo(null);
     paymentPage.setVisible(true);
 }
+
+
 
 private int countReservedLockersInDifferentBuildings(String userID) {
     int count = 0;
@@ -275,126 +278,25 @@ private String userHasReservationInBuilding(String userID, String building) {
         }
     }
 
-//private void saveLockerStatus() {
-//    try (BufferedWriter writer = new BufferedWriter(new FileWriter("userData.txt", true))) {
-//        // إذا كان الملف فارغًا، إضافة رأس الجدول
-//        if (new File("userData.txt").length() == 0) {
-//            String header = String.format("| %-10s | %-10s | %-10s | %-20s |", "Building", "Locker", "Available", "UserID");
-//            writer.write(header);
-//            writer.newLine();
-//            writer.write("-".repeat(header.length()));  // رسم الفاصل
-//            writer.newLine();
-//        }
-//
-//        // كتابة بيانات كل لوكر باستخدام التمثيل النصي من دالة toString()
-//        for (Map.Entry<String, ReservationData> entry : lockerStatus.entrySet()) {
-//            String[] parts = entry.getKey().split(":");
-//            String building = parts[0];
-//            String lockerName = parts[1];
-//            ReservationData reservation = entry.getValue();
-//            writer.write(String.format("| %-10s | %-10s %s", building, lockerName, reservation.toString()));
-//            writer.newLine();
-//        }
-//    } catch (IOException e) {
-//        e.printStackTrace();
-//    }
-//}
-//private Map<String, ReservationData> loadLockerStatus() {
-//    Map<String, ReservationData> status = new HashMap<>();
-//    try (BufferedReader reader = new BufferedReader(new FileReader("userData.txt"))) {
-//        String line;
-//        boolean headerRead = false;
-//
-//        while ((line = reader.readLine()) != null) {
-//            // تخطي السطر الخاص بالرأس
-//            if (!headerRead) {
-//                if (line.contains("Building")) {  // إذا كان السطر يحتوي على رأس الجدول
-//                    headerRead = true;  // بعد قراءة الرأس، يمكننا تخطيه
-//                }
-//                continue; // تخطي السطور التي تحتوي على رأس أو فاصل
-//            }
-//
-//            // الآن، نقوم بقراءة بيانات كل لوكر
-//            String[] parts = line.split("\\|");  // تقسيم السطر بناءً على الفواصل "|"
-//            if (parts.length == 4) {  // التأكد من أن السطر يحتوي على 4 أجزاء
-//                String building = parts[1].trim();  // الحصول على رقم المبنى
-//                String lockerName = parts[2].trim();  // الحصول على اسم اللوكر
-//                boolean isAvailable = parts[3].trim().equalsIgnoreCase("Available");  // تحديد حالة اللوكر
-//                String userID = parts[4].trim();  // الحصول على معرف المستخدم
-//
-//                // إضافة بيانات الحجز إلى الخريطة
-//                status.put(building + ":" + lockerName, new ReservationData(isAvailable, userID));
-//            }
-//        }
-//    } catch (IOException e) {
-//        e.printStackTrace();
-//    }
-//    return status;
-//}
+
 void confirmPayment(String lockerKey,JButton lockerButton,String currentUserID) {
     // عند تأكيد الدفع، تحديث حالة اللوكر إلى محجوز
-    //String lockerKey = selectedBuilding + ":" + lockerName;
+   
     lockerStatus.put(lockerKey, new ReservationData(false, currentUserID)); // تحديث الحالة
     lockerButton.setBackground(new Color(231, 76, 60));//red
     saveLockerStatus(); // حفظ الحالة في الملف
     JOptionPane.showMessageDialog(this, "Payment successful! Locker reserved.");
-//    dispose();
 
+     userHasReserved.put(currentUserID, true);
 }
 void cancelReservation(String lockerKey,JButton lockerButton,String currentUserID) {
     // عند إلغاء الدفع، إعادة حالة اللوكر إلى متاح
-    //String lockerKey = selectedBuilding + ":" + lockerName;
     lockerStatus.put(lockerKey, new ReservationData(true, "")); // إعادة الحالة
     saveLockerStatus(); // حفظ التحديثات في الملف
-    //lockerButton.setEnabled(true); // إعادة تمكين الزر إذا كان معطلاً
-    //lockerButton.setBackground(new Color(46, 204, 113)); // اللون الأخضر
     JOptionPane.showMessageDialog(this, "Payment canceled. Locker is now available.");
-    //page5(currentUserID);
-   
     dispose();
 
 }
-
-
-
-
-
-/*
-    private Map<String, ReservationData> loadLockerStatus() {
-        Map<String, ReservationData> status = new HashMap<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader("userData.txt"))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                if (line.startsWith("Locker:")) {
-                    String[] parts = line.split(":");
-                    if (parts.length == 5) {
-                        String lockerKey = parts[1] + ":" + parts[2];
-                        boolean isAvailable = Boolean.parseBoolean(parts[3]);
-                        String userID = parts[4]; // معرف المستخدم
-                        status.put(lockerKey, new ReservationData(isAvailable, userID));
-                    }
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return status;
-    }
-
-    private void saveLockerStatus() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("userData.txt"))) {
-            for (Map.Entry<String, ReservationData> entry : lockerStatus.entrySet()) {
-                String[] parts = entry.getKey().split(":");
-                String building = parts[0];
-                String lockerName = parts[1];
-                ReservationData reservation = entry.getValue();
-                writer.write("Locker:" + building + ":" + lockerName + ":" + reservation.isAvailable() + ":" + reservation.getUserID() + "\n");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    */
 
     // Setter for currentUserID to be called after successful login
     public void setCurrentUserID(String userID) {
@@ -465,9 +367,4 @@ class ReservationData {
     public void setAvailable(boolean available) {
         isAvailable = available;
     }
-//        @Override
-//    public String toString() {
-//        // تنسيق تمثيل الكائن بشكل مرتب دون تاريخ الحجز
-//        return String.format("| %-10s | %-20s |", isAvailable ? "Available" : "Reserved", userID);
-//    }
 }
