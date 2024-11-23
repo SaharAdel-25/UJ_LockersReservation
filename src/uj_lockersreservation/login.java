@@ -40,46 +40,48 @@ public class login extends JFrame {
         setVisible(true); // Make the frame visible
     }
     // Page 1: Welcome page
-
- private JPanel createPage1() {
+private JPanel createPage1() {
     JPanel page1Panel = new JPanel(new GridBagLayout());
-    page1Panel.setBackground(new Color(245, 245, 245));
+    page1Panel.setBackground(new Color(245, 245, 245)); // Set background color for the whole panel
 
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.insets = new Insets(10, 10, 10, 10); // Add spacing between components
     gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // Welcome message
+    // Welcome message
     JLabel welcomeLabel = new JLabel("Welcome to UJ Lockers Reservation System", SwingConstants.CENTER);
     welcomeLabel.setFont(new Font("Times New Roman", Font.BOLD, 24));
     welcomeLabel.setForeground(new Color(0, 102, 204));
     gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 2;
     page1Panel.add(welcomeLabel, gbc);
 
-        // Add logo image
+    // Add logo image
     JPanel imagePanel = new JPanel(new GridBagLayout());
+    imagePanel.setBackground(new Color(0, 0, 0, 0)); // Set transparent background for the image panel
     GridBagConstraints imageGbc = new GridBagConstraints();
     imageGbc.anchor = GridBagConstraints.CENTER; 
     imageGbc.insets = new Insets(10, 10, 10, 10);  // Add spacing between components
+
     JLabel imageLabel = new JLabel();
     ImageIcon icon = new ImageIcon("C:\\Users\\s4ooo\\Downloads\\UJ_LockersReservation-main\\UJ_LockersReservation-main\\UJ_LockersReservation\\src\\uj_lockersreservation\\UJ.png");
     Image img = icon.getImage().getScaledInstance(150, 120, Image.SCALE_SMOOTH);  
     icon = new ImageIcon(img);
     imageLabel.setIcon(icon);
     imagePanel.add(imageLabel, imageGbc);
+
     gbc.gridx = 0;  
     gbc.gridy++;  
     gbc.gridwidth = 2;  
     page1Panel.add(imagePanel, gbc);  
 
-        // Login button
+    // Login button
     JButton loginButton = new JButton("Log in");
     styleButton(loginButton);
     gbc.gridy++;  
     loginButton.addActionListener(e -> cardLayout.show(cardPanel, "Page 3"));
     page1Panel.add(loginButton, gbc);
 
-        // Register button
+    // Register button
     JButton registerButton = new JButton("Register");
     styleButton(registerButton);
     gbc.gridy++;  
@@ -88,6 +90,7 @@ public class login extends JFrame {
 
     return page1Panel;
 }
+
     // Page 2: Registration page
 
 private JPanel createPage2() {

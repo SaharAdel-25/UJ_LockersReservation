@@ -148,10 +148,9 @@ public class Payment extends JFrame {
    private void confirmAndShowReceipt(String firstName,String  lastName) {
         Locker a = new Locker(currentUserID,  firstName,  lastName);
 
-   // التحقق مما إذا لم يتم تحديد فصل دراسي
     if (amount.getText().isEmpty() || (!amount.getText().equals("40") && !amount.getText().equals("80"))) {
         JOptionPane.showMessageDialog(this, "Please select a semester before proceeding.", "Selection Required", JOptionPane.WARNING_MESSAGE);
-        return; // إيقاف العملية إذا لم يتم تحديد فصل دراسي
+        return; 
     }
           
         int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to proceed with " + selectedMethod + "?",
